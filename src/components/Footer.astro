@@ -1,0 +1,80 @@
+---
+/**
+ * Colophon + legal line. A printer would put the typefaces here, so we do too.
+ */
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+const updated = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' }).format(
+  new Date(`${site.updated}-01T00:00:00Z`),
+);
+---
+
+<footer class="page-foot">
+  <div class="wrap">
+    <div class="colophon">
+      <p class="colophon__item">{site.colophon.type}</p>
+      <p class="colophon__item">{site.colophon.build}</p>
+    </div>
+
+    <div class="legal">
+      <p>© {year} {site.name}</p>
+      <p class="legal__updated">Last updated {updated}</p>
+      <a class="legal__top" href="#profile">Back to top</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .colophon {
+    display: grid;
+    gap: 0.6rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .colophon__item {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.06em;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 52ch;
+  }
+
+  .legal {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.35rem 1.5rem;
+    padding-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .legal__updated {
+    color: var(--muted);
+  }
+
+  .legal__top {
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    transition: color var(--fast) linear;
+  }
+
+  .legal__top:hover {
+    color: var(--accent);
+  }
+
+  @media (min-width: 720px) {
+    .colophon {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2.5rem;
+    }
+  }
+</style>

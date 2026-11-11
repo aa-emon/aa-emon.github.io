@@ -1,0 +1,313 @@
+---
+/**
+ * Manuscript list. Everything visible here comes from the data file:
+ * author order, status badge, venue line, optional links and the BibTeX block
+ * (generated from the same fields, so it can never fall out of sync).
+ */
+import SectionHeader from './SectionHeader.astro';
+import Icon from './Icon.astro';
+import { publicationList } from '../data';
+import { isOpenStatus, publicationCount, statusLabel, toBibtex } from '../lib/format';
+
+const openCount = publicationList.filter((paper) => isOpenStatus(paper.status)).length;
+
+const lead =
+  openCount === publicationList.length
+    ? 'All three manuscripts are submitted and awaiting review. DOIs and preprints will be listed here as they become available.'
+    : 'Submitted and published work, most recent first.';
+---
+
+<section id="publications" aria-labelledby="publications-heading">
+  <div class="wrap">
+    <SectionHeader
+      id="publications"
+      title="Publications"
+      count={publicationCount(publicationList)}
+      lead={lead}
+    />
+
+    <ol class="pubs">
+      {
+        publicationList.map((paper, index) => (
+          <li class="pub">
+            <span class="pub__index">P.{index + 1}</span>
+
+            <article class="pub__body">
+              <h3 class="pub__title">{paper.title}</h3>
+
+              <ul class="pub__authors" aria-label="Authors">
+                {paper.authors.map((author) => (
+                  <li class={author.self ? 'pub__author--self' : undefined}>{author.name}</li>
+                ))}
+              </ul>
+
+              <p class="pub__venue">
+                <span class="pub__journal">{paper.venue.short}</span>
+                <span class="pub__journal-full">{paper.venue.full}</span>
+                {paper.venue.publisher && (
+                  <span class="pub__publisher">· {paper.venue.publisher}</span>
+                )}
+                <span class="pub__status">
+                  <span
+                    class="pub__dot"
+                    data-open={isOpenStatus(paper.status) ? 'true' : undefined}
+                    aria-hidden="true"></span>
+                  {statusLabel(paper.status)}
+                </span>
+                <span class="pub__year">{paper.year}</span>
+              </p>
+
+              {paper.note && <p class="pub__note">{paper.note}</p>}
+
+              {(paper.doi || paper.url || paper.pdf || paper.code) && (
+                <p class="pub__links">
+                  {paper.doi && (
+                    <a class="pub__link" href={`https://doi.org/${paper.doi}`} target="_blank" rel="noopener noreferrer">
+                      DOI <Icon name="arrow" size={9} />
+                    </a>
+                  )}
+                  {paper.url && (
+                    <a class="pub__link" href={paper.url} target="_blank" rel="noopener noreferrer">
+                      Publisher <Icon name="arrow" size={9} />
+                    </a>
+                  )}
+                  {paper.pdf && (
+                    <a class="pub__link" href={paper.pdf} target="_blank" rel="noopener noreferrer">
+                      PDF <Icon name="arrow" size={9} />
+                    </a>
+                  )}
+                  {paper.code && (
+                    <a class="pub__link" href={paper.code} target="_blank" rel="noopener noreferrer">
+                      Code <Icon name="arrow" size={9} />
+                    </a>
+                  )}
+                </p>
+              )}
+
+              <details class="cite">
+                <summary class="cite__summary">BibTeX</summary>
+                <pre class="cite__code"><code>{toBibtex(paper)}</code></pre>
+              </details>
+            </article>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .pubs {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .pub {
+    display: grid;
+    grid-template-columns: 1.9rem minmax(0, 1fr);
+    gap: 1rem;
+    padding-block: clamp(1.6rem, 3.2vw, 2.35rem);
+    border-top: 1px solid var(--rule);
+  }
+
+  .pub__index {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    padding-top: 0.5rem;
+    font-variant-numeric: tabular-nums;
+    transition: color var(--fast) linear;
+  }
+
+  .pub:hover .pub__index {
+    color: var(--accent);
+  }
+
+  .pub__body {
+    min-width: 0;
+  }
+
+  .pub__title {
+    font-size: 1.1875rem;
+    font-weight: 600;
+    line-height: 1.32;
+    letter-spacing: -0.018em;
+    max-width: 44ch;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+
+  .pub__authors {
+    margin-top: 0.6rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  /* Inline list so the separators are real text the browser can wrap. */
+  .pub__authors li {
+    display: inline;
+  }
+
+  .pub__authors li + li::before {
+    content: ', ';
+  }
+
+  .pub__author--self {
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--rule);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .pub__venue {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.3rem 0.5rem;
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .pub__journal {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+  }
+
+  .pub__journal-full {
+    color: var(--muted);
+  }
+
+  .pub__publisher {
+    color: var(--muted);
+  }
+
+  .pub__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-left: 0.15rem;
+    padding: 0.1rem 0.45rem;
+    border: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .pub__dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--rule);
+    flex: none;
+  }
+
+  .pub__dot[data-open='true'] {
+    background: var(--accent);
+  }
+
+  .pub__year {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pub__note {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .pub__links {
+    display: flex;
+    gap: 1.25rem;
+    margin-top: 0.75rem;
+  }
+
+  .pub__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+  }
+
+  .pub__link:hover {
+    color: var(--accent);
+  }
+
+  /* BibTeX ----------------------------------------------------------------- */
+
+  .cite {
+    margin-top: 0.85rem;
+  }
+
+  .cite__summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color var(--fast) linear;
+  }
+
+  .cite__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .cite__summary::after {
+    content: '+';
+    font-size: 0.6875rem;
+    line-height: 1;
+  }
+
+  .cite[open] .cite__summary::after {
+    content: '–';
+  }
+
+  .cite__summary:hover {
+    color: var(--accent);
+  }
+
+  .cite__code {
+    margin-top: 0.6rem;
+    padding: 0.85rem 1rem;
+    background: var(--paper-hi);
+    border: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    overflow-x: auto;
+    tab-size: 2;
+  }
+
+  @media (min-width: 640px) {
+    .pub {
+      grid-template-columns: 3rem minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+  }
+</style>

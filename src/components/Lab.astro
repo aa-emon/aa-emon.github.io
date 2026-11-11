@@ -1,0 +1,212 @@
+---
+/**
+ * The group, the supervisor, the people. A definition list rather than cards:
+ * label on the left, evidence on the right.
+ */
+import SectionHeader from './SectionHeader.astro';
+import Icon from './Icon.astro';
+import { collaborators, lab, supervisors } from '../data';
+---
+
+<section id="lab" aria-labelledby="lab-heading">
+  <div class="wrap">
+    <SectionHeader
+      id="lab"
+      title="Lab"
+      count={`${supervisors.length + collaborators.length} people`}
+      lead="Research is done in a room with other people. This is where the work is made."
+    />
+
+    <dl class="sheet">
+      <div class="row">
+        <dt>Group</dt>
+        <dd>
+          <a class="row__name" href={lab.url} target="_blank" rel="noopener noreferrer">
+            {lab.name} <Icon name="arrow" size={10} />
+          </a>
+          <p class="row__sub">{lab.fullName}</p>
+          <p class="row__text">{lab.description}</p>
+          <p class="row__host">{lab.url.replace(/^https?:\/\//, '')}</p>
+        </dd>
+      </div>
+
+      {
+        supervisors.map((person) => (
+          <div class="row">
+            <dt>Supervisor</dt>
+            <dd>
+              <p class="row__name--plain">{person.name}</p>
+              {person.affiliation && <p class="row__sub">{person.affiliation}</p>}
+              {person.note && <p class="row__text">{person.note}</p>}
+              {person.links && person.links.length > 0 && (
+                <ul class="row__links">
+                  {person.links.map((link) => (
+                    <li>
+                      <a
+                        href={link.href}
+                        target={link.external ? '_blank' : undefined}
+                        rel={link.external ? 'noopener noreferrer' : undefined}
+                      >
+                        {link.label}
+                        <Icon name="arrow" size={9} />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </dd>
+          </div>
+        ))
+      }
+
+      {
+        collaborators.length > 0 && (
+          <div class="row">
+            <dt>Collaborators</dt>
+            <dd>
+              <ul class="people">
+                {collaborators.map((person) => (
+                  <li>
+                    <span class="people__name">{person.name}</span>
+                    <span class="people__role">{person.role}</span>
+                    {person.note && <span class="people__note">{person.note}</span>}
+                  </li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        )
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  .sheet {
+    border-top: 1px solid var(--rule);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+    padding-block: clamp(1.25rem, 2.6vw, 1.8rem);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .row dt {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 0.3rem;
+  }
+
+  .row dd {
+    min-width: 0;
+  }
+
+  .row__name {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+    transition: color var(--fast) linear;
+  }
+
+  .row__name:hover {
+    color: var(--accent);
+  }
+
+  .row__name--plain {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    color: var(--ink);
+  }
+
+  .row__sub {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .row__text {
+    margin-top: 0.5rem;
+    max-width: 58ch;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
+
+  .row__host {
+    margin-top: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .row__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.25rem;
+    margin-top: 0.7rem;
+  }
+
+  .row__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    transition: color var(--fast) linear;
+  }
+
+  .row__links a:hover {
+    color: var(--accent);
+  }
+
+  .people {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .people li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15rem 0.75rem;
+  }
+
+  .people__name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .people__role,
+  .people__note {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  @media (min-width: 720px) {
+    .row {
+      grid-template-columns: 8rem minmax(0, 1fr);
+      gap: 1.75rem;
+    }
+  }
+</style>

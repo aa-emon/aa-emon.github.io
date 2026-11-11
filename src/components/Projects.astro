@@ -1,0 +1,227 @@
+---
+/**
+ * Selected work. One featured plate today; add objects to projects.ts and the
+ * list grows without touching this file.
+ */
+import SectionHeader from './SectionHeader.astro';
+import Icon from './Icon.astro';
+import { awards, projects } from '../data';
+
+const awardTitle = (id: string) => awards.find((award) => award.id === id);
+---
+
+<section id="projects" aria-labelledby="projects-heading">
+  <div class="wrap">
+    <SectionHeader
+      id="projects"
+      title="Projects"
+      count={`${projects.length} platform`}
+      lead="Systems that had to run, not just publish — built for competitions where a demo beats a diagram."
+    />
+
+    {
+      projects.map((project) => (
+        <article class="project">
+          <header class="project__head">
+            <span class="project__label">Selected work</span>
+            {project.period && <span class="project__period">{project.period}</span>}
+          </header>
+
+          <div class="project__main">
+            <h3 class="project__title">{project.title}</h3>
+            {project.subtitle && <p class="project__subtitle">{project.subtitle}</p>}
+            <p class="project__summary">{project.summary}</p>
+
+            {project.detail && project.detail.length > 0 && (
+              <ol class="project__detail">
+                {project.detail.map((line, index) => (
+                  <li>
+                    <span class="project__detail-num">{String(index + 1).padStart(2, '0')}</span>
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </div>
+
+          <footer class="project__foot">
+            <ul class="project__tags">
+              {project.tags.map((tag) => (
+                <li>{tag}</li>
+              ))}
+            </ul>
+
+            {project.awardIds?.map((awardId) => {
+              const award = awardTitle(awardId);
+              if (!award) return null;
+              return (
+                <a class="project__award" href="#awards">
+                  <span class="project__prize">{award.prize}</span>
+                  <span class="project__award-name">{award.title}</span>
+                  <Icon name="arrow" size={9} />
+                </a>
+              );
+            })}
+
+            {project.links?.map((link) => (
+              <a
+                class="project__award"
+                href={link.href}
+                target={link.external ? '_blank' : undefined}
+                rel={link.external ? 'noopener noreferrer' : undefined}
+              >
+                <span class="project__award-name">{link.label}</span>
+                <Icon name="arrow" size={9} />
+              </a>
+            ))}
+          </footer>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .project {
+    border: 1px solid var(--rule);
+    background: var(--paper-hi);
+    padding: clamp(1.25rem, 3.2vw, 2.5rem);
+  }
+
+  .project__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .project__period {
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .project__main {
+    padding-top: clamp(1.25rem, 2.5vw, 1.9rem);
+  }
+
+  .project__title {
+    font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: var(--ink);
+  }
+
+  .project__subtitle {
+    margin-top: 0.4rem;
+    font-size: var(--fs-small);
+    color: var(--accent);
+    letter-spacing: -0.008em;
+    max-width: 52ch;
+  }
+
+  .project__summary {
+    margin-top: 0.9rem;
+    max-width: 58ch;
+    font-size: 0.9375rem;
+    line-height: 1.62;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
+
+  .project__detail {
+    margin-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .project__detail li {
+    display: grid;
+    grid-template-columns: 1.9rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--rule-soft);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .project__detail li > span:last-child {
+    max-width: 66ch;
+  }
+
+  .project__detail-num {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding-top: 0.3rem;
+  }
+
+  .project__foot {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .project__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .project__tags li + li::before {
+    content: '·';
+    margin-right: 0.9rem;
+    color: var(--rule);
+  }
+
+  .project__award {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15rem 0.5rem;
+    max-width: 62ch;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    line-height: 1.7;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    transition: color var(--fast) linear;
+  }
+
+  .project__prize {
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .project__award-name {
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+  }
+
+  .project__award:hover .project__award-name {
+    color: var(--accent);
+  }
+
+  .project__award :global(svg) {
+    align-self: center;
+    color: var(--rule);
+  }
+</style>

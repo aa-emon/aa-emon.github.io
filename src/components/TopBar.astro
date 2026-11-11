@@ -1,0 +1,207 @@
+---
+/**
+ * Mobile header: a compact name plate plus a full-screen index dialog.
+ * `<dialog>` gives Esc, backdrop, focus handling and an inert page for free.
+ */
+import Icon from './Icon.astro';
+import { navSections, profile } from '../data';
+import { nav } from '../data/site';
+
+const email = profile.links.find((link) => link.icon === 'mail');
+---
+
+<header class="topbar">
+  <a class="topbar__name" href="#profile">{profile.name}</a>
+  <button
+    class="topbar__trigger"
+    id="index-open"
+    type="button"
+    aria-haspopup="dialog"
+    aria-controls="index-dialog"
+    aria-expanded="false"
+  >
+    <span>{nav.trigger}</span>
+    <span class="topbar__count">{navSections.length}</span>
+  </button>
+</header>
+
+<dialog id="index-dialog" class="index" aria-label={nav.label}>
+  <div class="index__inner">
+    <div class="index__head">
+      <span class="meta meta--ink">{profile.name}</span>
+      <button class="index__close" id="index-close" type="button">
+        <span>Close</span>
+        <Icon name="plus" size={11} class="index__close-icon" />
+      </button>
+    </div>
+
+    <nav class="index__nav" aria-label="Sections">
+      <ol>
+        {
+          navSections.map((section) => (
+            <li>
+              <a href={`#${section.id}`} data-nav={section.id}>
+                <span class="index__num">{section.number}</span>
+                <span>{section.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <div class="index__foot">
+      {email && <a class="index__mail" href={email.href}>{email.label}</a>}
+      <p class="meta">{profile.location}</p>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    height: var(--bar);
+    padding-inline: var(--gutter);
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .topbar__name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+
+  .topbar__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: none;
+    border: 0;
+    padding: 0.25rem 0;
+    font-family: var(--font-mono);
+    font-size: var(--fs-meta);
+    letter-spacing: var(--ls-meta);
+    text-transform: uppercase;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .topbar__count {
+    color: var(--accent);
+  }
+
+  @media (min-width: 1080px) {
+    .topbar {
+      display: none;
+    }
+  }
+
+  /* --- Dialog ------------------------------------------------------------ */
+
+  .index {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--paper);
+    color: var(--ink-soft);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .index::backdrop {
+    background: var(--paper);
+  }
+
+  .index__inner {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    padding: 1.1rem var(--gutter) calc(1.5rem + env(safe-area-inset-bottom));
+  }
+
+  .index__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .index__close {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: none;
+    border: 0;
+    padding: 0.2rem 0;
+    font-family: var(--font-mono);
+    font-size: var(--fs-meta);
+    letter-spacing: var(--ls-meta);
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .index__close-icon {
+    transform: rotate(45deg);
+  }
+
+  .index__nav {
+    margin-top: 1.25rem;
+  }
+
+  .index__nav li + li {
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .index__nav a {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    font-size: 1.375rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .index__num {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .index__nav a[aria-current='true'] .index__num {
+    color: var(--accent);
+  }
+
+  .index__foot {
+    margin-top: auto;
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .index__mail {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--ink);
+  }
+</style>

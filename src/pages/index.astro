@@ -1,11 +1,30 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+/**
+ * The page. Section order is fixed; visibility is decided by the data, so an
+ * empty data file removes its section from the page and from both indexes.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Research from '../components/Research.astro';
+import Publications from '../components/Publications.astro';
+import Projects from '../components/Projects.astro';
+import Awards from '../components/Awards.astro';
+import Experience from '../components/Experience.astro';
+import Lab from '../components/Lab.astro';
+import Contact from '../components/Contact.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { awards, experience, people, projects, publications, researchThemes } from '../data';
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout>
+  <Hero />
+
+  {researchThemes.length > 0 && <Research />}
+  {publications.length > 0 && <Publications />}
+  {projects.length > 0 && <Projects />}
+  {awards.length > 0 && <Awards />}
+  {experience.length > 0 && <Experience />}
+  {people.length > 0 && <Lab />}
+
+  <Contact />
+</BaseLayout>

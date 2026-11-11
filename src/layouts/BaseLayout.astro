@@ -1,0 +1,200 @@
+---
+/**
+ * Document shell: metadata, fonts, the two-column frame, and the only two
+ * behaviours on the site (index dialog + active section). Everything else is
+ * static HTML.
+ */
+import { Font, getImage } from 'astro:assets';
+import '../styles/base.css';
+import Footer from '../components/Footer.astro';
+import Rail from '../components/Rail.astro';
+import TopBar from '../components/TopBar.astro';
+import { profile, researchThemes, site } from '../data';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const base = import.meta.env.BASE_URL;
+
+const social = await getImage({
+  src: profile.portrait.src,
+  width: 800,
+  height: 800,
+  format: 'jpeg',
+  fit: 'cover',
+  quality: 82,
+});
+const socialUrl = new URL(social.src, site.url).href;
+
+const knowsAbout = [...new Set(researchThemes.flatMap((theme) => [theme.title, ...theme.keywords]))];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${site.url}/#person`,
+      name: profile.name,
+      url: site.url,
+      image: socialUrl,
+      email: `mailto:${site.email}`,
+      jobTitle: 'MSc Candidate in Computer Science',
+      description: site.description,
+      affiliation: {
+        '@type': 'CollegeOrUniversity',
+        name: 'Shandong University of Science and Technology',
+      },
+      alumniOf: {
+        '@type': 'CollegeOrUniversity',
+        name: 'Shandong University of Science and Technology',
+      },
+      sameAs: profile.sameAs,
+      knowsAbout,
+    },
+    {
+      '@type': 'ProfilePage',
+      '@id': `${site.url}/#page`,
+      url: site.url,
+      name: title,
+      isPartOf: { '@type': 'WebSite', name: site.name, url: site.url },
+      about: { '@id': `${site.url}/#person` },
+      inLanguage: 'en',
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang={site.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="author" content={profile.name} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#f4f1eb" />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialUrl} />
+    <meta property="og:image:width" content="800" />
+    <meta property="og:image:height" content="800" />
+    <meta property="og:image:alt" content={profile.name} />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="profile:first_name" content="Ayub Ali" />
+    <meta property="profile:last_name" content="Emon" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialUrl} />
+
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="sitemap" href={`${base}sitemap.xml`} />
+
+    <Font cssVariable="--font-sans" preload />
+    <Font cssVariable="--font-mono" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} />
+  </head>
+
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <TopBar />
+
+    <div class="shell">
+      <Rail />
+
+      <div class="col">
+        <main id="main">
+          <slot />
+        </main>
+        <Footer />
+      </div>
+    </div>
+
+    <script>
+      // 1. Index dialog (mobile).
+      const dialog = document.getElementById('index-dialog');
+      const trigger = document.getElementById('index-open');
+      const closeButton = document.getElementById('index-close');
+
+      if (dialog instanceof HTMLDialogElement) {
+        trigger?.addEventListener('click', () => {
+          dialog.showModal();
+          trigger.setAttribute('aria-expanded', 'true');
+        });
+
+        dialog.addEventListener('close', () => {
+          trigger?.setAttribute('aria-expanded', 'false');
+        });
+
+        closeButton?.addEventListener('click', () => dialog.close());
+
+        dialog.addEventListener('click', (event) => {
+          const target = event.target;
+          if (target instanceof Element && target.closest('a')) {
+            dialog.close();
+          }
+        });
+      }
+
+      // 2. Active section in the two indexes. IntersectionObserver wakes us up
+      //    only when a boundary is crossed — no scroll listener, no layout
+      //    thrash on every frame.
+      const links = Array.from(document.querySelectorAll<HTMLElement>('[data-nav]'));
+      const sections = links
+        .map((link) => document.getElementById(link.dataset.nav ?? ''))
+        .filter((section): section is HTMLElement => section !== null);
+
+      let current = '';
+
+      const markActive = () => {
+        const line = window.scrollY + window.innerHeight * 0.3;
+        let active = sections[0]?.id ?? '';
+
+        for (const section of sections) {
+          if (section.getBoundingClientRect().top + window.scrollY <= line) {
+            active = section.id;
+          }
+        }
+
+        if (active === current) return;
+        current = active;
+
+        for (const link of links) {
+          if (link.dataset.nav === active) {
+            link.setAttribute('aria-current', 'true');
+          } else {
+            link.removeAttribute('aria-current');
+          }
+        }
+      };
+
+      if (sections.length > 0) {
+        const observer = new IntersectionObserver(markActive, {
+          threshold: [0, 0.2, 0.5, 0.8, 1],
+        });
+
+        for (const section of sections) observer.observe(section);
+        markActive();
+
+        window.addEventListener('resize', markActive, { passive: true });
+        window.addEventListener('load', markActive, { once: true });
+      }
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,125 @@
+---
+/**
+ * The closing statement: one large address, then everything else at caption
+ * scale. No form — a mail client is the most reliable channel for a
+ * researcher.
+ */
+import SectionHeader from './SectionHeader.astro';
+import Icon from './Icon.astro';
+import { profile } from '../data';
+
+const email = profile.links.find((link) => link.icon === 'mail');
+const others = profile.links.filter((link) => link.icon !== 'mail');
+---
+
+<section id="contact" aria-labelledby="contact-heading">
+  <div class="wrap">
+    <SectionHeader
+      id="contact"
+      title="Contact"
+      lead="For correspondence about the manuscripts, research collaboration, or anything else — email is the reliable channel."
+    />
+
+    {
+      email && (
+        <a class="mail" href={email.href}>
+          <span class="mail__text">{email.label}</span>
+          <Icon name="arrow" size={22} class="mail__icon" />
+        </a>
+      )
+    }
+
+    <ul class="links">
+      {
+        others.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noopener noreferrer' : undefined}
+            >
+              <span>{link.label}</span>
+              <Icon name="arrow" size={9} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="where">
+      {profile.location} <span>· UTC+8</span>
+    </p>
+  </div>
+</section>
+
+<style>
+  .mail {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: clamp(1.25rem, 4.4vw, 2.6rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    color: var(--ink);
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--rule);
+    transition:
+      color var(--med) var(--ease),
+      border-color var(--med) var(--ease);
+    word-break: break-word;
+  }
+
+  .mail:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .mail :global(.mail__icon) {
+    transition: transform var(--med) var(--ease);
+    margin-top: 0.35em;
+    color: var(--accent);
+    flex: none;
+  }
+
+  .mail:hover :global(.mail__icon) {
+    transform: translate3d(3px, -3px, 0);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.03em;
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+    transition: color var(--fast) linear;
+  }
+
+  .links a:hover {
+    color: var(--accent);
+  }
+
+  .where {
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .where span {
+    color: var(--rule);
+  }
+</style>

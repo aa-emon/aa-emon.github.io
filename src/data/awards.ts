@@ -9,7 +9,7 @@ export const awards = [
     id: 'sdust-star-of-innovation-2026',
     title: '2026 International Student Honour',
     titleZh: '2026年度山东科技大学国际学生“科创之星”',
-    prize: '“Star of Innovation”',
+    prize: '“Innovation Star”',
     level: 'institutional',
     date: '2026-09',
     issuer: 'College of International Exchange, Shandong University of Science and Technology',
@@ -23,7 +23,7 @@ export const awards = [
     prize: 'Excellence Award',
     level: 'national',
     date: '2025-11',
-    issuer: 'National Research Association for Computer Education in Higher Education',
+    issuer: 'National Research Association for Computer Education in Higher Education, China',
     issuerZh: '全国高等学校计算机教育研究会',
   },
   {
@@ -34,7 +34,7 @@ export const awards = [
     prize: 'First Prize',
     level: 'provincial',
     date: '2025-12',
-    issuer: 'Shandong Provincial Department of Human Resources and Social Security',
+    issuer: 'Shandong Provincial Department of Human Resources and Social Security, China',
     issuerZh: '山东省人力资源和社会保障厅',
   },
   {

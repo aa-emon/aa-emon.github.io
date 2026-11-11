@@ -1,5 +1,5 @@
 import type { Profile } from '../lib/types';
-import portrait from '../assets/aa_emon.jpg';
+import portrait from '../assets/emon.jpg';
 
 export const profile = {
   name: 'Ayub Ali Emon',

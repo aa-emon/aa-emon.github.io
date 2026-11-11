@@ -26,7 +26,7 @@ not a personal brand site.
 ## 2. Page structure
 
 ```
-hero      role · name · location · portrait (4:5, rules above and below) · one paragraph · keywords · links
+hero      role · name · location · portrait (square, no frame, no caption) · one paragraph · keywords · links
 01        Education      (2 degrees, each with location)
 02        Lab            (CogTwins Lab + supervisor; add one object per group)
 03        Awards         (3 competition results, newest first)
@@ -80,7 +80,7 @@ src/
   pages/
     index.astro           composes the four sections
   assets/
-    aa_emon.jpg           portrait source (1279×1281) — the only copy in the repo
+    emon.jpg              portrait source (500×500) — the only copy in the repo
 public/
   favicon.svg  robots.txt  sitemap.xml
 .github/workflows/deploy.yml   GitHub Pages build (inert until Pages is enabled)
@@ -101,6 +101,7 @@ public/
 - Rhythm: sections separated by `--block` (2.75–4rem) plus a 1px hairline.
 - Rules: content-width only — the footer rule spans the column, never the viewport.
 - No shadows, no radii, no cards, no icons except the ↗ glyph.
+- Portrait: 112px square, no border, no caption, no rules — the photo is the only framed element and it carries no type.
 - Background: a halftone field (12px dot pattern, radial mask) fading out of
   the top-right corner with two construction circles through it, all in
   `--rule`. Fixed, `aria-hidden`, `pointer-events: none`, 55% opacity under
@@ -117,7 +118,7 @@ public/
 | New award | append to `awards.ts` |
 | New degree | append to `education.ts` |
 | New activity | append to `activities.ts`; `end: null` renders as Present |
-| Change photo | replace `src/assets/aa_emon.jpg` (square, ≥1200px so 2× still looks sharp) |
+| Change photo | replace `src/assets/emon.jpg` (square, 500px is enough at the rendered 112px) |
 | Change copy | `profile.ts` / `site.ts` |
 
 `npm run build` fails on a malformed entry, because every data file ends with
@@ -172,6 +173,7 @@ source; `public/emon.jpg` was removed to avoid two copies drifting apart.
 `site: https://aa-emon.github.io`, `base: '/'`. If the repo becomes a project
 page, change `base` only. `.github/workflows/deploy.yml` runs on Node 24 and
 publishes `dist/` once GitHub Pages → Source is set to GitHub Actions.
+
 
 
 

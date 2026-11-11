@@ -41,23 +41,18 @@ const [lede] = profile.bio;
     </ul>
   </div>
 
-  <figure class="hero__figure">
-    <div class="hero__frame">
-      <Image
-        src={profile.portrait.src}
-        alt={profile.portrait.alt}
-        width={520}
-        height={650}
-        densities={[1, 2]}
-        format="webp"
-        quality={82}
-        priority
-      />
-    </div>
-    <figcaption class="hero__caption">
-      <span>Fig. 01 — Portrait</span>
-    </figcaption>
-  </figure>
+  <div class="hero__photo">
+    <Image
+      src={profile.portrait.src}
+      alt={profile.portrait.alt}
+      width={112}
+      height={112}
+      densities={[1, 2]}
+      format="webp"
+      quality={86}
+      priority
+    />
+  </div>
 </header>
 
 <style>
@@ -67,38 +62,16 @@ const [lede] = profile.bio;
     gap: 1.9rem 3rem;
   }
 
-  /* Portrait: rules above and below, no frame, so it reads as a printed
-     figure rather than an avatar in a box. */
-  .hero__figure {
+  /* A clean square, no frame, no rules, no caption. */
+  .hero__photo {
     order: -1;
-    width: min(14rem, 60%);
+    width: clamp(5.5rem, 17vw, 7rem);
   }
 
-  .hero__frame {
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    padding-block: 0.55rem;
-  }
-
-  .hero__frame :global(img) {
+  .hero__photo :global(img) {
+    display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    object-position: 50% 22%;
-  }
-
-  .hero__caption {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-top: 0.45rem;
-    font-family: var(--font-mono);
-    font-size: 0.5625rem;
-    letter-spacing: 0.11em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-variant-numeric: tabular-nums;
   }
 
   .hero__role {
@@ -175,14 +148,13 @@ const [lede] = profile.bio;
 
   @media (min-width: 680px) {
     .hero {
-      grid-template-columns: minmax(0, 1fr) clamp(10rem, 24vw, 14.5rem);
+      grid-template-columns: minmax(0, 1fr) 7rem;
       align-items: start;
     }
 
-    .hero__figure {
+    .hero__photo {
       order: 0;
-      width: auto;
+      width: 7rem;
     }
   }
 </style>
-

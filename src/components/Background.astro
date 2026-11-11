@@ -1,16 +1,44 @@
 ---
 /**
- * Background artwork: two hairlines and a quarter circle, drawn in the rule
- * colour so they sit just above the paper and never compete with text.
- * Fixed, non-interactive, hidden in print.
+ * Background artwork: a halftone field fading out of the top-right corner,
+ * with two construction circles cutting through it.
+ *
+ * All of it is drawn in the hairline colour, so the page still reads as paper
+ * with printer's marks rather than a decorated web page. Fixed behind the
+ * column, non-interactive, hidden when printing.
  */
 ---
 
 <div class="art" aria-hidden="true">
   <svg viewBox="0 0 1440 900" preserveAspectRatio="xMaxYMin slice" fill="none">
-    <g stroke="currentColor" stroke-width="1">
-      <circle cx="1395" cy="120" r="330" />
-      <circle cx="1395" cy="120" r="210" />
+    <defs>
+      <pattern id="art-dots" width="12" height="12" patternUnits="userSpaceOnUse">
+        <circle cx="1.1" cy="1.1" r="1.1" fill="currentColor" />
+      </pattern>
+
+      <radialGradient id="art-fade" gradientUnits="userSpaceOnUse" cx="1440" cy="0" r="660">
+        <stop offset="0" stop-color="#fff" stop-opacity="1" />
+        <stop offset="0.5" stop-color="#fff" stop-opacity="0.45" />
+        <stop offset="1" stop-color="#fff" stop-opacity="0" />
+      </radialGradient>
+
+      <mask id="art-mask" maskUnits="userSpaceOnUse" x="760" y="0" width="680" height="680">
+        <rect x="760" y="0" width="680" height="680" fill="url(#art-fade)" />
+      </mask>
+    </defs>
+
+    <rect
+      x="760"
+      y="0"
+      width="680"
+      height="680"
+      fill="url(#art-dots)"
+      mask="url(#art-mask)"
+      opacity="0.9"></rect>
+
+    <g stroke="currentColor" stroke-width="1" opacity="0.9">
+      <circle cx="1400" cy="80" r="340" />
+      <circle cx="1215" cy="250" r="195" />
     </g>
   </svg>
 </div>
@@ -22,7 +50,7 @@
     z-index: 0;
     pointer-events: none;
     color: var(--rule);
-    opacity: 0.75;
+    opacity: 0.9;
     overflow: hidden;
   }
 
@@ -31,14 +59,14 @@
     height: 100%;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 720px) {
     .art {
-      opacity: 0.5;
+      opacity: 0.55;
     }
 
     .art svg {
-      /* Pull the rings toward the corner so they stay out of the text column. */
-      transform: translate(14%, -8%);
+      /* Push the mark toward the corner so it never lands behind the text. */
+      transform: translate(10%, -6%);
     }
   }
 

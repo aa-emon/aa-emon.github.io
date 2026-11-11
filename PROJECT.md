@@ -101,6 +101,10 @@ public/
 - Rhythm: sections separated by `--block` (2.75–4rem) plus a 1px hairline.
 - Rules: content-width only — the footer rule spans the column, never the viewport.
 - No shadows, no radii, no cards, no icons except the ↗ glyph.
+- Background: a halftone field (12px dot pattern, radial mask) fading out of
+  the top-right corner with two construction circles through it, all in
+  `--rule`. Fixed, `aria-hidden`, `pointer-events: none`, 55% opacity under
+  720px, hidden in print. It must never sit behind body text at full contrast.
 
 ---
 

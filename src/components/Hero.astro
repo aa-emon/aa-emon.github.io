@@ -41,38 +41,64 @@ const [lede] = profile.bio;
     </ul>
   </div>
 
-  <div class="hero__plate">
-    <Image
-      src={profile.portrait.src}
-      alt={profile.portrait.alt}
-      width={128}
-      height={128}
-      densities={[1, 2]}
-      format="webp"
-      quality={84}
-      priority
-    />
-  </div>
+  <figure class="hero__figure">
+    <div class="hero__frame">
+      <Image
+        src={profile.portrait.src}
+        alt={profile.portrait.alt}
+        width={520}
+        height={650}
+        densities={[1, 2]}
+        format="webp"
+        quality={82}
+        priority
+      />
+    </div>
+    <figcaption class="hero__caption">
+      <span>Fig. 01 — Portrait</span>
+    </figcaption>
+  </figure>
 </header>
 
 <style>
   .hero {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 1.75rem;
+    gap: 1.9rem 3rem;
   }
 
-  .hero__plate {
+  /* Portrait: rules above and below, no frame, so it reads as a printed
+     figure rather than an avatar in a box. */
+  .hero__figure {
     order: -1;
-    width: 4.75rem;
-    border: 1px solid var(--rule);
-    padding: 0.25rem;
-    background: var(--paper-hi);
+    width: min(14rem, 60%);
   }
 
-  .hero__plate :global(img) {
+  .hero__frame {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding-block: 0.55rem;
+  }
+
+  .hero__frame :global(img) {
     width: 100%;
     height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 22%;
+  }
+
+  .hero__caption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
   }
 
   .hero__role {
@@ -147,16 +173,16 @@ const [lede] = profile.bio;
     color: var(--accent);
   }
 
-  @media (min-width: 560px) {
+  @media (min-width: 680px) {
     .hero {
-      grid-template-columns: minmax(0, 1fr) 8rem;
-      gap: 2.5rem;
+      grid-template-columns: minmax(0, 1fr) clamp(10rem, 24vw, 14.5rem);
       align-items: start;
     }
 
-    .hero__plate {
+    .hero__figure {
       order: 0;
-      width: 8rem;
+      width: auto;
     }
   }
 </style>
+

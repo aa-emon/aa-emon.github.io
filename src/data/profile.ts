@@ -19,12 +19,14 @@ export const profile = {
       href: 'https://www.researchgate.net/profile/Ayub-Ali-Emon',
       external: true,
     },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/aaemon98/', external: true },
     // Add Google Scholar here once the profile exists.
   ],
 
   sameAs: [
     'https://orcid.org/0009-0004-6763-1672',
     'https://www.researchgate.net/profile/Ayub-Ali-Emon',
+    'https://www.linkedin.com/in/aaemon98/',
   ],
 
   portrait: { src: portrait, alt: 'Ayub Ali Emon' },

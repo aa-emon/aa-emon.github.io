@@ -1,5 +1,5 @@
 /**
- * Content schema. Four data files, one shape each.
+ * Content schema. One shape per data file.
  * Data files assert against these types with `satisfies`.
  */
 
@@ -16,8 +16,6 @@ export interface Profile {
   name: string;
   /** e.g. "MSc Candidate, Computer Science" */
   role: string;
-  /** e.g. "Shandong University of Science and Technology · Qingdao, China" */
-  affiliation: string;
   /** Two sentences at most. */
   bio: string[];
   /** Research keywords, rendered on one line. */
@@ -49,8 +47,9 @@ export interface Publication {
   publisher: string;
   year: number;
   status: PublicationStatus;
-  doi?: string;
+  /** Optional. When present the title becomes a link. */
   url?: string;
+  doi?: string;
 }
 
 export type AwardLevel = 'national' | 'provincial' | 'institutional';
@@ -74,9 +73,28 @@ export interface Education {
   id: string;
   degree: string;
   org: string;
+  /** Optional, e.g. "Qingdao, China". */
+  location?: string;
   /** '2024' or '2024-09' */
   start: string;
   /** null renders as "Present". */
   end: string | null;
-  note?: string;
+}
+
+/**
+ * A group you work with. Add one entry per lab or research group; the
+ * supervisor link and the group link are both optional.
+ */
+export interface Lab {
+  id: string;
+  name: string;
+  fullName?: string;
+  /** Your position, e.g. "MSc researcher". */
+  role: string;
+  supervisor: string;
+  supervisorUrl?: string;
+  /** Optional. When present the lab name becomes a link. */
+  url?: string;
+  /** Optional, e.g. "2024–Present". */
+  period?: string;
 }

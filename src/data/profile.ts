@@ -4,10 +4,9 @@ import portrait from '../assets/emon.jpg';
 export const profile = {
   name: 'Ayub Ali Emon',
   role: 'MSc Candidate, Computer Science',
-  affiliation: 'Shandong University of Science and Technology · Qingdao, China',
 
   bio: [
-    'I am a master’s candidate in computer science at Shandong University of Science and Technology, where I also completed my bachelor’s degree in software engineering. My research is on AI agents, large language models, and industrial AI systems.',
+    'I build and study AI systems for industry — agents, language models, and digital twins that have to hold up where labels are scarce, hardware is small, and a wrong decision is expensive. My research is about the unglamorous guarantees: calibration, auditability, and knowing when a model should stay quiet.',
   ],
 
   interests: ['AI agents', 'Large language models', 'Industrial AI', 'Digital twins'],
@@ -20,7 +19,7 @@ export const profile = {
       href: 'https://www.researchgate.net/profile/Ayub-Ali-Emon',
       external: true,
     },
-    { label: 'CogTwins Lab', href: 'https://cogtwins.github.io', external: true },
+    // Add Google Scholar here once the profile exists.
   ],
 
   sameAs: [

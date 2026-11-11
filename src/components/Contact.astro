@@ -4,15 +4,34 @@ import Icon from './Icon.astro';
 import { profile, site } from '../data';
 
 const email = profile.links[0];
+const profiles = profile.links.filter((link) => link.external);
 ---
 
-<Block id="contact" index="04" title="Contact">
+<Block id="contact" index="05" title="Contact">
   <a class="contact__mail" href={email.href}>
     <span>{email.label}</span>
     <Icon size={16} class="contact__icon" />
   </a>
 
   <p class="mono contact__where">{site.location}</p>
+
+  <ul class="contact__profiles">
+    {
+      profiles.map((link) => (
+        <li>
+          <a
+            class="contact__profile"
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {link.label}
+            <Icon size={9} />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
 </Block>
 
 <style>
@@ -50,5 +69,29 @@ const email = profile.links[0];
 
   .contact__where {
     margin-top: 0.85rem;
+  }
+
+  .contact__profiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.35rem;
+    margin-top: 1.15rem;
+  }
+
+  .contact__profile {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    transition: color var(--fast) linear;
+  }
+
+  .contact__profile:hover {
+    color: var(--accent);
   }
 </style>

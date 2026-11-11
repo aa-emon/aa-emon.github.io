@@ -4,12 +4,22 @@ import { paperList } from '../data';
 import { statusLabel } from '../lib/format';
 ---
 
-<Block id="publications" index="01" title="Publications" count={`${paperList.length} manuscripts`}>
+<Block id="publications" index="04" title="Publications">
   <ol class="rows">
     {
-      paperList.map((paper) => (
+      paperList.map((paper) => {
+        const href = paper.url ?? (paper.doi ? `https://doi.org/${paper.doi}` : null);
+        return (
         <li>
-          <h3 class="pub__title">{paper.title}</h3>
+          <h3 class="pub__title">
+            {href ? (
+              <a class="pub__link" href={href} target="_blank" rel="noopener noreferrer">
+                {paper.title}
+              </a>
+            ) : (
+              paper.title
+            )}
+          </h3>
 
           <ul class="pub__authors" aria-label="Authors">
             {paper.authors.map((author) => (
@@ -21,7 +31,8 @@ import { statusLabel } from '../lib/format';
             {paper.venue} · {paper.publisher} · {statusLabel(paper.status)} · {paper.year}
           </p>
         </li>
-      ))
+        );
+      })
     }
   </ol>
 </Block>
@@ -34,6 +45,20 @@ import { statusLabel } from '../lib/format';
     letter-spacing: -0.011em;
     color: var(--ink);
     text-wrap: pretty;
+  }
+
+  .pub__link {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100% 1px;
+    transition:
+      background-size var(--med) var(--ease),
+      color var(--fast) linear;
+  }
+
+  .pub__link:hover {
+    color: var(--accent);
   }
 
   .pub__authors {

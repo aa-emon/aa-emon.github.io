@@ -12,7 +12,6 @@ const updated = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
     <div class="foot__inner">
       <p>© {year} {site.name}</p>
       <p>Updated {updated}</p>
-      <p class="foot__type">Archivo &amp; JetBrains Mono</p>
     </div>
   </div>
 </footer>
@@ -35,12 +34,12 @@ const updated = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
     color: var(--muted);
   }
 
-  .foot__type {
+  .foot__inner p:last-child {
     margin-left: auto;
   }
 
   @media (max-width: 560px) {
-    .foot__type {
+    .foot__inner p:last-child {
       margin-left: 0;
     }
   }

@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
-import { profile } from '../data';
+import { profile, site } from '../data';
 
 const [lede] = profile.bio;
 ---
@@ -10,7 +10,7 @@ const [lede] = profile.bio;
   <div class="hero__text">
     <p class="hero__role">{profile.role}</p>
     <h1 class="hero__name">{profile.name}</h1>
-    <p class="hero__affil">{profile.affiliation}</p>
+    <p class="hero__affil">{site.location}</p>
 
     <p class="hero__bio">{lede}</p>
 

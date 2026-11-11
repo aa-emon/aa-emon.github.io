@@ -1,0 +1,105 @@
+---
+/** Research groups: name, position, supervisor. Links render only when supplied. */
+import Block from './Block.astro';
+import Icon from './Icon.astro';
+import { labs } from '../data';
+---
+
+<Block id="lab" index="02" title="Lab">
+  <ol class="rows">
+    {
+      labs.map((group) => (
+        <li class="lab">
+          <div class="lab__head">
+            {group.url ? (
+              <a
+                class="lab__name lab__link"
+                href={group.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {group.name}
+                <Icon size={9} />
+              </a>
+            ) : (
+              <span class="lab__name">{group.name}</span>
+            )}
+
+            {group.period && <span class="mono lab__period">{group.period}</span>}
+          </div>
+
+          {group.fullName && <p class="mono lab__full">{group.fullName}</p>}
+
+          <p class="lab__role">
+            {group.role} · supervised by{' '}
+            {group.supervisorUrl ? (
+              <a
+                href={group.supervisorUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {group.supervisor}
+              </a>
+            ) : (
+              group.supervisor
+            )}
+          </p>
+        </li>
+      ))
+    }
+  </ol>
+</Block>
+
+<style>
+  .lab__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .lab__name {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  .lab__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: color var(--fast) linear;
+  }
+
+  .lab__link:hover {
+    color: var(--accent);
+  }
+
+  .lab__period {
+    white-space: nowrap;
+  }
+
+  .lab__full {
+    margin-top: 0.15rem;
+    line-height: 1.6;
+  }
+
+  .lab__role {
+    margin-top: 0.35rem;
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .lab__role a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    transition: color var(--fast) linear;
+  }
+
+  .lab__role a:hover {
+    color: var(--accent);
+  }
+</style>

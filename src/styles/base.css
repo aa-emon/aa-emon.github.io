@@ -79,6 +79,13 @@ ol {
 
 /* --- Frame ---------------------------------------------------------------- */
 
+/* Sits above the fixed background artwork. */
+.page,
+.foot {
+  position: relative;
+  z-index: 1;
+}
+
 .page {
   max-width: var(--page);
   margin-inline: auto;

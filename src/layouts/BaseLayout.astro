@@ -5,6 +5,7 @@
  */
 import { Font, getImage } from 'astro:assets';
 import '../styles/base.css';
+import Background from '../components/Background.astro';
 import Footer from '../components/Footer.astro';
 import { profile, site } from '../data';
 
@@ -97,6 +98,8 @@ const jsonLd = {
   </head>
 
   <body>
+    <Background />
+
     <main class="page" id="main">
       <slot />
     </main>

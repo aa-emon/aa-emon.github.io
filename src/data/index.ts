@@ -2,12 +2,13 @@
 
 import { sortAwards, sortEducation, sortPublications } from '../lib/format';
 import { awards } from './awards';
-import { education, lab } from './education';
+import { education } from './education';
+import { labs } from './labs';
 import { profile } from './profile';
 import { publications } from './publications';
 import { site } from './site';
 
-export { awards, education, lab, profile, publications, site };
+export { awards, education, labs, profile, publications, site };
 
 /** Published first, then submissions. */
 export const paperList = sortPublications(publications);

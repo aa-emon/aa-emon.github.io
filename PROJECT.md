@@ -26,13 +26,18 @@ not a personal brand site.
 ## 2. Page structure
 
 ```
-hero      role · name · affiliation · one paragraph · research keywords · links · portrait
+hero      role · name · location · one paragraph · research keywords · links · portrait
 01        Publications   (3 submitted manuscripts)
 02        Awards         (3 competition results, newest first)
-03        Education      (2 degrees + one line for the lab affiliation)
-04        Contact        (email + location)
-footer    © · updated · typefaces
+03        Education      (2 degrees)
+04        Lab            (CogTwins Lab + supervisor; add one object per group)
+05        Contact        (email + location)
+footer    © · updated
 ```
+
+No counts are printed in section headers. `publications[].url` / `.doi` and
+`labs[].url` / `.supervisorUrl` are optional — when present the title or name
+becomes a link, when absent the same text renders plain.
 
 Every section is optional: if its data array is empty, the component is not
 rendered and its number does not appear.

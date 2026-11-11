@@ -1,10 +1,10 @@
 ---
 import Block from './Block.astro';
-import { degreeList, lab } from '../data';
+import { degreeList } from '../data';
 import { formatPeriod } from '../lib/format';
 ---
 
-<Block id="education" index="03" title="Education" count={`${degreeList.length} degrees`}>
+<Block id="education" index="01" title="Education">
   <ol class="rows">
     {
       degreeList.map((degree) => (
@@ -12,19 +12,15 @@ import { formatPeriod } from '../lib/format';
           <span class="mono edu__years">{formatPeriod(degree.start, degree.end)}</span>
           <div>
             <p class="edu__degree">{degree.degree}</p>
-            <p class="mono edu__org">{degree.org}</p>
+            <p class="mono edu__org">
+              {degree.org}
+              {degree.location && <> · {degree.location}</>}
+            </p>
           </div>
         </li>
       ))
     }
   </ol>
-
-  <p class="mono edu__lab">
-    Member, {lab.name} · supervised by
-    <a class="ulink" href={lab.supervisorUrl} target="_blank" rel="noopener noreferrer">
-      {lab.supervisor}
-    </a>
-  </p>
 </Block>
 
 <style>
@@ -48,17 +44,6 @@ import { formatPeriod } from '../lib/format';
   .edu__org {
     margin-top: 0.15rem;
     line-height: 1.6;
-  }
-
-  .edu__lab {
-    margin-top: 1rem;
-    padding-top: 0.85rem;
-    border-top: 1px solid var(--rule);
-    line-height: 1.8;
-  }
-
-  .edu__lab a {
-    color: var(--ink);
   }
 
   @media (min-width: 560px) {

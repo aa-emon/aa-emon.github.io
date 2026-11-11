@@ -80,8 +80,11 @@ export interface Education {
   end: string | null;
 }
 
-/** A community, association or volunteer role. */
-export interface ServiceRole {
+/**
+ * Anything outside the degree and the lab: memberships (IEEE, societies),
+ * volunteer roles, club positions, advisory roles.
+ */
+export interface Activity {
   id: string;
   /** "Member", "Advisor", "Volunteer representative" */
   role: string;

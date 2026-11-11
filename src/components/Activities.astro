@@ -1,18 +1,19 @@
 ---
+/** Memberships and roles outside the degree and the lab. */
 import Block from './Block.astro';
-import { serviceList } from '../data';
+import { activityList } from '../data';
 import { formatPeriod } from '../lib/format';
 ---
 
-<Block id="service" index="05" title="Service">
+<Block id="activities" index="05" title="Activities">
   <ol class="rows">
     {
-      serviceList.map((entry) => (
-        <li class="svc">
-          <span class="mono svc__years">{formatPeriod(entry.start, entry.end)}</span>
+      activityList.map((entry) => (
+        <li class="act">
+          <span class="mono act__years">{formatPeriod(entry.start, entry.end)}</span>
           <div>
-            <p class="svc__role">{entry.role}</p>
-            <p class="mono svc__org">
+            <p class="act__role">{entry.role}</p>
+            <p class="mono act__org">
               {entry.url ? (
                 <a class="ulink" href={entry.url} target="_blank" rel="noopener noreferrer">
                   {entry.org}
@@ -29,35 +30,35 @@ import { formatPeriod } from '../lib/format';
 </Block>
 
 <style>
-  .svc {
+  .act {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 0.15rem;
   }
 
-  .svc__years {
+  .act__years {
     padding-top: 0.15rem;
     white-space: nowrap;
   }
 
-  .svc__role {
+  .act__role {
     font-size: 0.9375rem;
     font-weight: 500;
     color: var(--ink);
     line-height: 1.4;
   }
 
-  .svc__org {
+  .act__org {
     margin-top: 0.15rem;
     line-height: 1.6;
   }
 
-  .svc__org a {
+  .act__org a {
     color: var(--ink);
   }
 
   @media (min-width: 560px) {
-    .svc {
+    .act {
       grid-template-columns: 5.5rem minmax(0, 1fr);
       gap: 1.25rem;
     }

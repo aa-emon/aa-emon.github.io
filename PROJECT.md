@@ -31,7 +31,7 @@ hero      role · name · location · one paragraph · research keywords · link
 02        Lab            (CogTwins Lab + supervisor; add one object per group)
 03        Awards         (3 competition results, newest first)
 04        Publications   (3 submitted manuscripts)
-05        Service        (community and volunteer roles)
+05        Activities     (memberships, volunteer and community roles)
 06        Contact        (email + location + profile links)
 footer    ©
 ```
@@ -56,7 +56,7 @@ src/
     publications.ts       manuscripts (status drives label + order)
     awards.ts             competitions (Chinese originals kept, not rendered)
     education.ts          degrees
-    service.ts            community and volunteer roles
+    activities.ts         memberships, volunteer and community roles
     site.ts               URL, title, description, updated date
     index.ts              barrel + sorted derived lists
   lib/
@@ -71,7 +71,7 @@ src/
     Publications.astro
     Awards.astro
     Education.astro
-    Service.astro
+    Activities.astro
     Contact.astro
     Footer.astro
     Icon.astro            single arrow glyph
@@ -112,7 +112,7 @@ public/
 | Paper accepted | set `status: 'accepted'`, add `doi`/`url` — label and order update |
 | New award | append to `awards.ts` |
 | New degree | append to `education.ts` |
-| New service role | append to `service.ts`; `end: null` renders as Present |
+| New activity | append to `activities.ts`; `end: null` renders as Present |
 | Change photo | replace `src/assets/emon.jpg` (square, ≥500px) |
 | Change copy | `profile.ts` / `site.ts` |
 
@@ -168,5 +168,6 @@ source; `public/emon.jpg` was removed to avoid two copies drifting apart.
 `site: https://aa-emon.github.io`, `base: '/'`. If the repo becomes a project
 page, change `base` only. `.github/workflows/deploy.yml` runs on Node 24 and
 publishes `dist/` once GitHub Pages → Source is set to GitHub Actions.
+
 
 

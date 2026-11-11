@@ -5,10 +5,10 @@ import Education from '../components/Education.astro';
 import Lab from '../components/Lab.astro';
 import Awards from '../components/Awards.astro';
 import Publications from '../components/Publications.astro';
-import Service from '../components/Service.astro';
+import Activities from '../components/Activities.astro';
 import Contact from '../components/Contact.astro';
 
-import { awards, education, labs, publications, service } from '../data';
+import { activities, awards, education, labs, publications } from '../data';
 ---
 
 <BaseLayout>
@@ -18,7 +18,7 @@ import { awards, education, labs, publications, service } from '../data';
   {labs.length > 0 && <Lab />}
   {awards.length > 0 && <Awards />}
   {publications.length > 0 && <Publications />}
-  {service.length > 0 && <Service />}
+  {activities.length > 0 && <Activities />}
 
   <Contact />
 </BaseLayout>

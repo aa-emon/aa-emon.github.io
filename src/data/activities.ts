@@ -1,10 +1,13 @@
-import type { ServiceRole } from '../lib/types';
+import type { Activity } from '../lib/types';
 
 /**
- * Community and volunteer roles. `end: null` renders as "Present"; add `url`
- * to any entry and the organisation name becomes a link.
+ * Memberships, volunteer roles, club and community positions — everything
+ * that is neither a degree nor a lab.
+ *
+ * One object per role. `end: null` renders as "Present"; add `url` and the
+ * organisation name becomes a link (IEEE, a society page, a group site).
  */
-export const service = [
+export const activities = [
   {
     id: 'bcysa',
     role: 'Member',
@@ -26,4 +29,4 @@ export const service = [
     start: '2023',
     end: '2024',
   },
-] satisfies ServiceRole[];
+] satisfies Activity[];

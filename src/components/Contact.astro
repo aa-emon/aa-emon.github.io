@@ -1,68 +1,30 @@
 ---
-/**
- * The closing statement: one large address, then everything else at caption
- * scale. No form — a mail client is the most reliable channel for a
- * researcher.
- */
-import SectionHeader from './SectionHeader.astro';
+import Block from './Block.astro';
 import Icon from './Icon.astro';
-import { profile } from '../data';
+import { profile, site } from '../data';
 
-const email = profile.links.find((link) => link.icon === 'mail');
-const others = profile.links.filter((link) => link.icon !== 'mail');
+const email = profile.links[0];
 ---
 
-<section id="contact" aria-labelledby="contact-heading">
-  <div class="wrap">
-    <SectionHeader
-      id="contact"
-      title="Contact"
-      lead="For correspondence about the manuscripts, research collaboration, or anything else — email is the reliable channel."
-    />
+<Block id="contact" index="04" title="Contact">
+  <a class="contact__mail" href={email.href}>
+    <span>{email.label}</span>
+    <Icon size={16} class="contact__icon" />
+  </a>
 
-    {
-      email && (
-        <a class="mail" href={email.href}>
-          <span class="mail__text">{email.label}</span>
-          <Icon name="arrow" size={22} class="mail__icon" />
-        </a>
-      )
-    }
-
-    <ul class="links">
-      {
-        others.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              target={link.external ? '_blank' : undefined}
-              rel={link.external ? 'noopener noreferrer' : undefined}
-            >
-              <span>{link.label}</span>
-              <Icon name="arrow" size={9} />
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-
-    <p class="where">
-      {profile.location} <span>· UTC+8</span>
-    </p>
-  </div>
-</section>
+  <p class="mono contact__where">{site.location}</p>
+</Block>
 
 <style>
-  .mail {
+  .contact__mail {
     display: inline-flex;
     align-items: flex-start;
-    gap: 0.5rem;
-    font-size: clamp(1.25rem, 4.4vw, 2.6rem);
+    gap: 0.4rem;
+    font-size: clamp(1.125rem, 3.4vw, 1.5rem);
     font-weight: 500;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
+    letter-spacing: -0.025em;
     color: var(--ink);
-    padding-bottom: 0.3rem;
+    padding-bottom: 0.2rem;
     border-bottom: 1px solid var(--rule);
     transition:
       color var(--med) var(--ease),
@@ -70,56 +32,23 @@ const others = profile.links.filter((link) => link.icon !== 'mail');
     word-break: break-word;
   }
 
-  .mail:hover {
+  .contact__mail:hover {
     color: var(--accent);
     border-color: var(--accent);
   }
 
-  .mail :global(.mail__icon) {
-    transition: transform var(--med) var(--ease);
-    margin-top: 0.35em;
+  .contact__mail :global(.contact__icon) {
+    margin-top: 0.3em;
     color: var(--accent);
+    transition: transform var(--med) var(--ease);
     flex: none;
   }
 
-  .mail:hover :global(.mail__icon) {
-    transform: translate3d(3px, -3px, 0);
+  .contact__mail:hover :global(.contact__icon) {
+    transform: translate3d(2px, -2px, 0);
   }
 
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.75rem;
-    margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
-  }
-
-  .links a {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.03em;
-    color: var(--ink);
-    border-bottom: 1px solid var(--rule);
-    padding-bottom: 2px;
-    transition: color var(--fast) linear;
-  }
-
-  .links a:hover {
-    color: var(--accent);
-  }
-
-  .where {
-    margin-top: 1.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .where span {
-    color: var(--rule);
+  .contact__where {
+    margin-top: 0.85rem;
   }
 </style>

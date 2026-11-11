@@ -1,0 +1,22 @@
+---
+/** Section shell: hairline, monospace label, optional count on the right. */
+interface Props {
+  id: string;
+  index: string;
+  title: string;
+  count?: string;
+}
+
+const { id, index, title, count } = Astro.props;
+---
+
+<section class="block" id={id} aria-labelledby={`${id}-title`}>
+  <div class="block__head">
+    <h2 class="block__title" id={`${id}-title`}>
+      <span class="block__num">{index}</span>
+      {title}
+    </h2>
+    {count && <span class="block__count">{count}</span>}
+  </div>
+  <slot />
+</section>

@@ -1,181 +1,75 @@
 ---
-/**
- * Competition results, grouped by level so the progression campus → province →
- * country is legible at a glance.
- */
-import SectionHeader from './SectionHeader.astro';
-import { awardCount, awardGroups, projects } from '../data';
-import { formatDate, formatDateNumeric } from '../lib/format';
-
-const projectTitle = (id: string) => projects.find((project) => project.id === id)?.title;
+import Block from './Block.astro';
+import { awardList } from '../data';
+import { formatDate, levelLabel } from '../lib/format';
 ---
 
-<section id="awards" aria-labelledby="awards-heading">
-  <div class="wrap">
-    <SectionHeader
-      id="awards"
-      title="Awards"
-      count={`${awardCount} results`}
-      lead="Three stages of the same idea, taken through a campus round, a provincial final, and a national one."
-    />
-
+<Block id="awards" index="02" title="Awards" count={`${awardList.length} results`}>
+  <ol class="rows">
     {
-      awardGroups.map((group) => (
-        <div class="group">
-          <h3 class="group__head">
-            <span>{group.label}</span>
-            <span class="group__count">{String(group.items.length).padStart(2, '0')}</span>
-          </h3>
+      awardList.map((award) => (
+        <li class="award">
+          <span class="mono award__date">{formatDate(award.date)}</span>
 
-          <ol class="awards">
-            {group.items.map((award) => (
-              <li class="award">
-                <span class="award__date">{formatDateNumeric(award.date)}</span>
-
-                <div class="award__body">
-                  <p class="award__prize">{award.prize}</p>
-                  <p class="award__title">{award.title}</p>
-                  <p class="award__issuer">{award.issuer}</p>
-
-                  <p class="award__meta">
-                    {award.reference && (
-                      <span>
-                        {award.reference.label} <span class="award__ref">{award.reference.value}</span>
-                      </span>
-                    )}
-                    {award.issued && <span>Issued {formatDate(award.issued)}</span>}
-                    {award.projectId && projectTitle(award.projectId) && (
-                      <a class="award__project" href="#projects">
-                        {projectTitle(award.projectId)}
-                      </a>
-                    )}
-                  </p>
-
-                  {award.note && <p class="award__note">{award.note}</p>}
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
+          <div class="award__body">
+            <p class="award__prize">
+              {award.prize}
+              <span class="mono award__level">{levelLabel(award.level)}</span>
+            </p>
+            <p class="award__title">{award.title}</p>
+            <p class="mono award__issuer">
+              {award.issuer}
+              {award.reference && <> · {award.reference.label} {award.reference.value}</>}
+            </p>
+          </div>
+        </li>
       ))
     }
-  </div>
-</section>
+  </ol>
+</Block>
 
 <style>
-  .group + .group {
-    margin-top: clamp(2.25rem, 4vw, 3.25rem);
-  }
-
-  .group__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    padding-top: 0.55rem;
-    border-top: 1px solid var(--ink);
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    font-weight: 400;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    color: var(--ink);
-  }
-
-  .group__count {
-    color: var(--muted);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .awards {
-    border-bottom: 1px solid var(--rule);
-  }
-
   .award {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.35rem;
-    padding-block: clamp(1.15rem, 2.4vw, 1.6rem);
-    border-bottom: 1px solid var(--rule-soft);
-  }
-
-  .award:last-child {
-    border-bottom: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.15rem;
   }
 
   .award__date {
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.06em;
-    color: var(--muted);
-    font-variant-numeric: tabular-nums;
-    padding-top: 0.2rem;
-  }
-
-  .award__body {
-    min-width: 0;
+    padding-top: 0.15rem;
   }
 
   .award__prize {
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    color: var(--ink);
-    line-height: 1.3;
-  }
-
-  .award__title {
-    margin-top: 0.15rem;
-    font-size: 0.9375rem;
-    line-height: 1.5;
-    color: var(--ink-soft);
-    max-width: 62ch;
-    text-wrap: pretty;
-  }
-
-  .award__issuer {
-    margin-top: 0.35rem;
-    font-size: 0.8125rem;
-    line-height: 1.5;
-    color: var(--muted);
-    max-width: 62ch;
-  }
-
-  .award__meta {
     display: flex;
+    align-items: baseline;
     flex-wrap: wrap;
-    gap: 0.25rem 1.25rem;
-    margin-top: 0.55rem;
-    font-family: var(--font-mono);
-    font-size: 0.5625rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .award__ref {
+    gap: 0.1rem 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
     color: var(--ink);
+    line-height: 1.4;
   }
 
-  .award__project {
-    color: var(--ink);
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .award__project:hover {
+  .award__level {
     color: var(--accent);
   }
 
-  .award__note {
-    margin-top: 0.4rem;
-    font-size: 0.8125rem;
-    color: var(--muted);
+  .award__title {
+    margin-top: 0.1rem;
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    color: var(--ink-soft);
   }
 
-  @media (min-width: 720px) {
+  .award__issuer {
+    margin-top: 0.25rem;
+    line-height: 1.6;
+  }
+
+  @media (min-width: 560px) {
     .award {
       grid-template-columns: 5.5rem minmax(0, 1fr);
-      gap: 1.5rem;
+      gap: 1.25rem;
     }
   }
 </style>

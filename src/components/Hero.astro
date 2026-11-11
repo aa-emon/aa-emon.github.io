@@ -1,311 +1,162 @@
 ---
-/**
- * Opening spread: role and place on the top hairline, the name at full scale,
- * then a two-column block of prose and portrait.
- *
- * The h1 and the portrait are deliberately left out of the entrance animation
- * so the largest contentful paint is never delayed by a fade.
- */
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
-import { profile, site } from '../data';
+import { profile } from '../data';
 
-const [lede, ...rest] = profile.bio;
-/* Split the focus line on its separators so a phrase can never break at a
-   hyphen mid-word — only at the dots. */
-const focusParts = profile.focus.split('·').map((part) => part.trim());
-const updated = new Intl.DateTimeFormat('en-GB', { month: 'short', year: 'numeric' }).format(
-  new Date(`${site.updated}-01T00:00:00Z`),
-);
+const [lede] = profile.bio;
 ---
 
-<section id="profile" class="hero" aria-labelledby="hero-name">
-  <div class="wrap">
-    <div class="hero__top" data-enter style="--i: 0">
-      <p class="meta meta--ink">{profile.headline}</p>
-      <p class="meta">{profile.location}</p>
-    </div>
+<header class="hero">
+  <div class="hero__text">
+    <p class="hero__role">{profile.role}</p>
+    <h1 class="hero__name">{profile.name}</h1>
+    <p class="hero__affil">{profile.affiliation}</p>
 
-    <h1 class="hero__name" id="hero-name">{profile.name}</h1>
+    <p class="hero__bio">{lede}</p>
 
-    <p class="hero__focus" data-enter style="--i: 1">
-      {focusParts.map((part) => <span class="hero__focus-item">{part}</span>)}
+    <p class="hero__interests">
+      {
+        profile.interests.map((interest) => (
+          <span class="hero__interest">{interest}</span>
+        ))
+      }
     </p>
 
-    <div class="hero__body">
-      <div class="hero__text">
-        <p class="hero__lede" data-enter style="--i: 2">{lede}</p>
-        {
-          rest.map((paragraph, index) => (
-            <p class="hero__para" data-enter style={`--i: ${index + 3}`}>
-              {paragraph}
-            </p>
-          ))
-        }
-
-        <dl class="facts" data-enter style="--i: 5">
-          {
-            profile.facts.map((fact) => (
-              <div class="facts__item">
-                <dt class="facts__label">{fact.label}</dt>
-                <dd class="facts__value">
-                  {fact.href ? (
-                    <a
-                      href={fact.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="ulink"
-                    >
-                      {fact.value}
-                    </a>
-                  ) : (
-                    fact.value
-                  )}
-                </dd>
-              </div>
-            ))
-          }
-        </dl>
-
-        <ul class="hero__links" data-enter style="--i: 6">
-          {
-            profile.links.map((link) => (
-              <li>
-                <a
-                  href={link.href}
-                  class="hero__link"
-                  target={link.external ? '_blank' : undefined}
-                  rel={link.external ? 'noopener noreferrer' : undefined}
-                >
-                  {link.icon === 'mail' && <Icon name="mail" size={11} />}
-                  <span>{link.label}</span>
-                  {link.icon === 'arrow' && <Icon name="arrow" size={9} />}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <figure class="hero__figure">
-        <div class="plate">
-          <Image
-            src={profile.portrait.src}
-            alt={profile.portrait.alt}
-            width={300}
-            height={375}
-            densities={[1, 1.5]}
-            format="webp"
-            quality={84}
-            fit="cover"
-            priority
-          />
-        </div>
-        <figcaption class="hero__caption">
-          <span>{profile.portrait.label}</span>
-          <span>{site.updated.replace('-', '.')}</span>
-        </figcaption>
-      </figure>
-    </div>
+    <ul class="hero__links">
+      {
+        profile.links.map((link) => (
+          <li>
+            <a
+              class="hero__link"
+              href={link.href}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noopener noreferrer' : undefined}
+            >
+              {link.label}
+              {link.external && <Icon size={9} />}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
-</section>
+
+  <div class="hero__plate">
+    <Image
+      src={profile.portrait.src}
+      alt={profile.portrait.alt}
+      width={128}
+      height={128}
+      densities={[1, 2]}
+      format="webp"
+      quality={84}
+      priority
+    />
+  </div>
+</header>
 
 <style>
   .hero {
-    padding-top: clamp(2.5rem, 6vh, 4.5rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
   }
 
-  .hero__top {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    padding-bottom: clamp(2rem, 5vw, 3.5rem);
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  .hero__plate {
+    order: -1;
+    width: 4.75rem;
+    border: 1px solid var(--rule);
+    padding: 0.25rem;
+    background: var(--paper-hi);
   }
 
-  .hero__top .meta:last-child {
-    text-align: right;
+  .hero__plate :global(img) {
+    width: 100%;
+    height: auto;
   }
 
-  @media (max-width: 560px) {
-    .hero__top .meta:last-child {
-      display: none;
-    }
+  .hero__role {
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
 
   .hero__name {
+    margin-top: 0.55rem;
     font-size: var(--fs-name);
     font-weight: 600;
-    line-height: var(--lh-tight);
+    line-height: 1;
     letter-spacing: var(--ls-name);
-    color: var(--ink);
-    text-wrap: balance;
   }
 
-  .hero__focus {
+  .hero__affil {
+    margin-top: 0.55rem;
+    font-size: var(--fs-small);
+    color: var(--muted);
+  }
+
+  .hero__bio {
+    margin-top: 1.35rem;
+    font-size: var(--fs-lead);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 38rem;
+  }
+
+  .hero__interests {
     display: flex;
     flex-wrap: wrap;
-    gap: 0 0.55rem;
-    margin-top: clamp(1rem, 2vw, 1.5rem);
+    gap: 0.1rem 0.55rem;
+    margin-top: 1.15rem;
     font-family: var(--font-mono);
-    font-size: 0.625rem;
+    font-size: var(--fs-micro);
     letter-spacing: 0.08em;
-    text-transform: uppercase;
     color: var(--muted);
     line-height: 1.9;
   }
 
-  .hero__focus-item {
-    white-space: nowrap;
-  }
-
-  .hero__focus-item:not(:last-child)::after {
+  .hero__interest:not(:last-child)::after {
     content: '·';
     margin-left: 0.55rem;
     color: var(--rule);
   }
 
-  .hero__body {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: clamp(2.25rem, 5vw, 4rem);
-    margin-top: clamp(2.25rem, 4.5vw, 3.5rem);
-    align-items: start;
-  }
-
-  .hero__text {
-    display: flex;
-    flex-direction: column;
-    max-width: var(--measure);
-  }
-
-  .hero__lede {
-    font-size: var(--fs-lead);
-    line-height: 1.5;
-    letter-spacing: -0.011em;
-    color: var(--ink);
-    font-weight: 400;
-  }
-
-  .hero__para {
-    margin-top: 1rem;
-    color: var(--ink-soft);
-  }
-
-  .hero__figure {
-    order: -1;
-    max-width: 13.5rem;
-  }
-
-  .plate {
-    background: var(--paper-hi);
-    border: 1px solid var(--rule);
-    padding: 0.4rem;
-  }
-
-  .plate :global(img) {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    outline: 1px solid rgba(21, 20, 15, 0.06);
-    outline-offset: -1px;
-  }
-
-  .hero__caption {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-top: 0.45rem;
-    padding-top: 0.35rem;
-    border-top: 1px solid var(--rule);
-    font-family: var(--font-mono);
-    font-size: 0.5625rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* Data sheet ------------------------------------------------------------- */
-
-  .facts {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1rem 1.75rem;
-    margin-top: clamp(2rem, 4vw, 2.75rem);
-    padding-top: 1.15rem;
-    border-top: 1px solid var(--rule);
-  }
-
-  .facts__item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    min-width: 0;
-  }
-
-  .facts__label {
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .facts__value {
-    font-size: 0.9375rem;
-    line-height: 1.45;
-    color: var(--ink);
-    letter-spacing: -0.005em;
-  }
-
-  /* Links ------------------------------------------------------------------ */
-
   .hero__links {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem 1.75rem;
-    margin-top: clamp(1.75rem, 3vw, 2.25rem);
+    gap: 0.4rem 1.35rem;
+    margin-top: 1.5rem;
   }
 
   .hero__link {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    padding-bottom: 0.25rem;
-    border-bottom: 1px solid var(--rule);
+    gap: 0.3rem;
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.02em;
+    font-size: var(--fs-micro);
+    letter-spacing: 0.05em;
     color: var(--ink);
-    transition:
-      color var(--fast) linear,
-      border-color var(--fast) linear;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    transition: color var(--fast) linear;
   }
 
   .hero__link:hover {
     color: var(--accent);
-    border-color: var(--accent);
   }
 
-  @media (min-width: 520px) {
-    .facts {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 860px) {
-    .hero__body {
-      grid-template-columns: minmax(0, 1fr) 17rem;
-      gap: clamp(2rem, 4vw, 3.5rem);
+  @media (min-width: 560px) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr) 8rem;
+      gap: 2.5rem;
+      align-items: start;
     }
 
-    .hero__figure {
+    .hero__plate {
       order: 0;
+      width: 8rem;
     }
   }
 </style>
-
-

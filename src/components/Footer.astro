@@ -1,8 +1,5 @@
 ---
-/**
- * Colophon + legal line. A printer would put the typefaces here, so we do too.
- */
-import { site } from '../data/site';
+import { site } from '../data';
 
 const year = new Date().getFullYear();
 const updated = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' }).format(
@@ -10,71 +7,41 @@ const updated = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
 );
 ---
 
-<footer class="page-foot">
-  <div class="wrap">
-    <div class="colophon">
-      <p class="colophon__item">{site.colophon.type}</p>
-      <p class="colophon__item">{site.colophon.build}</p>
-    </div>
-
-    <div class="legal">
+<footer class="foot">
+  <div class="page">
+    <div class="foot__inner">
       <p>© {year} {site.name}</p>
-      <p class="legal__updated">Last updated {updated}</p>
-      <a class="legal__top" href="#profile">Back to top</a>
+      <p>Updated {updated}</p>
+      <p class="foot__type">Archivo &amp; JetBrains Mono</p>
     </div>
   </div>
 </footer>
 
 <style>
-  .colophon {
-    display: grid;
-    gap: 0.6rem;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid var(--rule-soft);
+  .foot {
+    margin-top: clamp(2.75rem, 6.5vw, 4rem);
   }
 
-  .colophon__item {
-    font-family: var(--font-mono);
-    font-size: 0.5625rem;
-    letter-spacing: 0.06em;
-    line-height: 1.7;
-    color: var(--muted);
-    max-width: 52ch;
-  }
-
-  .legal {
+  .foot__inner {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.35rem 1.5rem;
-    padding-top: 1rem;
+    gap: 0.35rem 1.75rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 0.9rem;
+    padding-bottom: 0.25rem;
     font-family: var(--font-mono);
-    font-size: 0.5625rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: var(--fs-micro);
+    letter-spacing: 0.08em;
     color: var(--muted);
   }
 
-  .legal__updated {
-    color: var(--muted);
+  .foot__type {
+    margin-left: auto;
   }
 
-  .legal__top {
-    color: var(--ink);
-    border-bottom: 1px solid var(--rule);
-    padding-bottom: 1px;
-    transition: color var(--fast) linear;
-  }
-
-  .legal__top:hover {
-    color: var(--accent);
-  }
-
-  @media (min-width: 720px) {
-    .colophon {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 2.5rem;
+  @media (max-width: 560px) {
+    .foot__type {
+      margin-left: 0;
     }
   }
 </style>

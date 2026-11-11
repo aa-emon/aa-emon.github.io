@@ -1,15 +1,10 @@
 ---
-/**
- * Inline icon set. Three marks only, drawn on a 24-unit grid at hairline
- * weight — no icon library, no font, no extra request.
- */
 interface Props {
-  name: 'arrow' | 'mail' | 'dot' | 'plus';
   size?: number;
   class?: string;
 }
 
-const { name, size = 11, class: className } = Astro.props;
+const { size = 10, class: className } = Astro.props;
 ---
 
 <svg
@@ -19,18 +14,10 @@ const { name, size = 11, class: className } = Astro.props;
   viewBox="0 0 24 24"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.7"
+  stroke-width="1.8"
   stroke-linecap="square"
   aria-hidden="true"
   focusable="false"
 >
-  {name === 'arrow' && <path d="M7 17 17 7M9 7h8v8" />}
-  {name === 'mail' && (
-    <>
-      <rect x="3" y="5.5" width="18" height="13" />
-      <path d="m3.5 6.5 8.5 6 8.5-6" />
-    </>
-  )}
-  {name === 'plus' && <path d="M12 5v14M5 12h14" />}
-  {name === 'dot' && <circle cx="12" cy="12" r="3.5" fill="currentColor" stroke="none" />}
+  <path d="M7 17 17 7M9 7h8v8" />
 </svg>

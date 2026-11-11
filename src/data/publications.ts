@@ -1,12 +1,9 @@
 import type { Publication } from '../lib/types';
 
 /**
- * Manuscripts and publications, newest state first.
- *
- * `status` drives the badge, the BibTeX entry type and the sort order:
- *   submitted → under-review → revision → accepted → published → preprint
- * When a manuscript is accepted, change `status`, add `doi`/`url`, and the
- * rest of the page updates itself.
+ * Manuscripts, newest state first. `status` drives the label, the order and
+ * nothing else: change it to 'accepted' or 'published' and add `doi` when the
+ * news arrives.
  */
 export const publications = [
   {
@@ -18,15 +15,10 @@ export const publications = [
       { name: 'P. Phonesamay' },
       { name: 'Jiehan Zhou' },
     ],
-    venue: {
-      short: 'RESS',
-      full: 'Reliability Engineering & System Safety',
-      publisher: 'Elsevier',
-    },
+    venue: 'RESS',
+    publisher: 'Reliability Engineering & System Safety · Elsevier',
     year: 2026,
     status: 'submitted',
-    type: 'journal',
-    keywords: ['Conformal prediction', 'Label budget', 'Maintenance decisions'],
   },
   {
     id: 'quantized-lora-bearing',
@@ -37,15 +29,10 @@ export const publications = [
       { name: 'P. Phonesamay' },
       { name: 'Jiehan Zhou' },
     ],
-    venue: {
-      short: 'EAAI',
-      full: 'Engineering Applications of Artificial Intelligence',
-      publisher: 'Elsevier',
-    },
+    venue: 'EAAI',
+    publisher: 'Engineering Applications of Artificial Intelligence · Elsevier',
     year: 2026,
     status: 'submitted',
-    type: 'journal',
-    keywords: ['Large language models', 'LoRA', 'Quantisation', 'Fault diagnosis'],
   },
   {
     id: 'cross-domain-iot',
@@ -56,14 +43,9 @@ export const publications = [
       { name: 'Ayub Ali Emon', self: true },
       { name: 'Jiehan Zhou' },
     ],
-    venue: {
-      short: 'JISA',
-      full: 'Journal of Information Security and Applications',
-      publisher: 'Elsevier',
-    },
+    venue: 'JISA',
+    publisher: 'Journal of Information Security and Applications · Elsevier',
     year: 2026,
     status: 'submitted',
-    type: 'journal',
-    keywords: ['IoT security', 'Intrusion detection', 'Model auditing'],
   },
 ] satisfies Publication[];

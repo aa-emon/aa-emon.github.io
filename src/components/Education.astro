@@ -1,0 +1,70 @@
+---
+import Block from './Block.astro';
+import { degreeList, lab } from '../data';
+import { formatPeriod } from '../lib/format';
+---
+
+<Block id="education" index="03" title="Education" count={`${degreeList.length} degrees`}>
+  <ol class="rows">
+    {
+      degreeList.map((degree) => (
+        <li class="edu">
+          <span class="mono edu__years">{formatPeriod(degree.start, degree.end)}</span>
+          <div>
+            <p class="edu__degree">{degree.degree}</p>
+            <p class="mono edu__org">{degree.org}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+
+  <p class="mono edu__lab">
+    Member, {lab.name} · supervised by
+    <a class="ulink" href={lab.supervisorUrl} target="_blank" rel="noopener noreferrer">
+      {lab.supervisor}
+    </a>
+  </p>
+</Block>
+
+<style>
+  .edu {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.15rem;
+  }
+
+  .edu__years {
+    padding-top: 0.15rem;
+  }
+
+  .edu__degree {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  .edu__org {
+    margin-top: 0.15rem;
+    line-height: 1.6;
+  }
+
+  .edu__lab {
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--rule);
+    line-height: 1.8;
+  }
+
+  .edu__lab a {
+    color: var(--ink);
+  }
+
+  @media (min-width: 560px) {
+    .edu {
+      grid-template-columns: 5.5rem minmax(0, 1fr);
+      gap: 1.25rem;
+    }
+  }
+</style>

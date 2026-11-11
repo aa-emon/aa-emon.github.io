@@ -1,30 +1,20 @@
 ---
-/**
- * The page. Section order is fixed; visibility is decided by the data, so an
- * empty data file removes its section from the page and from both indexes.
- */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import Research from '../components/Research.astro';
 import Publications from '../components/Publications.astro';
-import Projects from '../components/Projects.astro';
 import Awards from '../components/Awards.astro';
-import Experience from '../components/Experience.astro';
-import Lab from '../components/Lab.astro';
+import Education from '../components/Education.astro';
 import Contact from '../components/Contact.astro';
 
-import { awards, experience, people, projects, publications, researchThemes } from '../data';
+import { awards, education, publications } from '../data';
 ---
 
 <BaseLayout>
   <Hero />
 
-  {researchThemes.length > 0 && <Research />}
   {publications.length > 0 && <Publications />}
-  {projects.length > 0 && <Projects />}
   {awards.length > 0 && <Awards />}
-  {experience.length > 0 && <Experience />}
-  {people.length > 0 && <Lab />}
+  {education.length > 0 && <Education />}
 
   <Contact />
 </BaseLayout>

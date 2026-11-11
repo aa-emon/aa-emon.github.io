@@ -1,40 +1,33 @@
 import type { Award } from '../lib/types';
 
 /**
- * Competition results. Chinese titles and issuers are kept verbatim for
- * provenance but never rendered — the page is English-only.
- *
- * `reference` is deliberately generic: a certificate number, a team number,
- * or anything else that can be checked.
+ * Competition results, newest first. Chinese titles and issuers are kept for
+ * provenance but never rendered; the page is English only.
  */
 export const awards = [
   {
     id: 'csc-intelligent-computing-2025',
     title:
-      '2025 National University Student Computer Systems Ability Competition — Intelligent Computing Innovation Design Track (Xiandao Cup)',
+      'National University Student Computer Systems Ability Competition — Intelligent Computing Innovation Design Track (Xiandao Cup)',
     titleZh: '2025年全国大学生计算机系统能力大赛 智能计算创新设计赛（先导杯）',
     prize: 'Excellence Award',
     level: 'national',
     date: '2025-11',
-    issued: '2026-01',
     issuer: 'National Research Association for Computer Education in Higher Education',
     issuerZh: '全国高等学校计算机教育研究会',
     reference: { label: 'Team ID', value: 'T202510242496657' },
-    note: 'Entered for Shandong University of Science and Technology.',
   },
   {
     id: 'shandong-digital-engineer-2025',
     title:
-      'First Shandong Provincial Digital Engineer Innovation and Creativity Competition (International Digital Engineer Invitational)',
+      'Shandong Provincial Digital Engineer Innovation and Creativity Competition (International Digital Engineer Invitational)',
     titleZh: '首届山东省数字工程师创新创意大赛暨国际数字工程师邀请赛',
     prize: 'First Prize',
     level: 'provincial',
     date: '2025-12',
-    issued: '2026-01',
     issuer: 'Shandong Provincial Department of Human Resources and Social Security',
     issuerZh: '山东省人力资源和社会保障厅',
     reference: { label: 'Certificate No.', value: '2025-IIoT-01-02' },
-    projectId: 'intellifactory',
   },
   {
     id: 'xiandao-campus-2025',
@@ -43,8 +36,7 @@ export const awards = [
     prize: 'First Prize',
     level: 'institutional',
     date: '2025-07',
-    issued: '2025-09',
-    issuer: 'Secretariat, Xiandao Industrial Ecosystem Cooperation Base; College of Computer Science and Engineering, SDUST',
+    issuer: 'Xiandao Industrial Ecosystem Cooperation Base; College of Computer Science and Engineering, SDUST',
     issuerZh: '先导产业生态合作基地秘书处、山东科技大学计算机科学与工程学院',
     reference: { label: 'Certificate No.', value: '20250604' },
   },

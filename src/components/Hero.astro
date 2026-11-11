@@ -62,10 +62,13 @@ const [lede] = profile.bio;
     gap: 1.9rem 3rem;
   }
 
-  /* A clean square, no frame, no rules, no caption. */
+  /* A mounted print: the photo sits on a paper mat inside one hairline.
+     No box, no tint, no type — the mat does the framing. */
   .hero__photo {
     order: -1;
-    width: clamp(5.5rem, 17vw, 7rem);
+    width: clamp(5.75rem, 18vw, 7.5rem);
+    padding: 5px;
+    border: 1px solid rgba(22, 21, 15, 0.24);
   }
 
   .hero__photo :global(img) {
@@ -148,13 +151,13 @@ const [lede] = profile.bio;
 
   @media (min-width: 680px) {
     .hero {
-      grid-template-columns: minmax(0, 1fr) 7rem;
+      grid-template-columns: minmax(0, 1fr) 7.5rem;
       align-items: start;
     }
 
     .hero__photo {
       order: 0;
-      width: 7rem;
+      width: 7.5rem;
     }
   }
 </style>

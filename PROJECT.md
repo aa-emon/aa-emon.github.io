@@ -26,7 +26,7 @@ not a personal brand site.
 ## 2. Page structure
 
 ```
-hero      role · name · location · portrait (square, no frame, no caption) · one paragraph · keywords · links
+hero      role · name · location · portrait (square, hairline frame + paper mat) · one paragraph · keywords · links
 01        Education      (2 degrees, each with location)
 02        Lab            (CogTwins Lab + supervisor; add one object per group)
 03        Awards         (3 competition results, newest first)
@@ -101,7 +101,7 @@ public/
 - Rhythm: sections separated by `--block` (2.75–4rem) plus a 1px hairline.
 - Rules: content-width only — the footer rule spans the column, never the viewport.
 - No shadows, no radii, no cards, no icons except the ↗ glyph.
-- Portrait: 112px square, no border, no caption, no rules — the photo is the only framed element and it carries no type.
+- Portrait: 110px square inside a 5px paper mat and one hairline border (rgba ink .24) — a mounted print, never a card: no tint, no radius, no shadow, no type near it.
 - Background: a halftone field (12px dot pattern, radial mask) fading out of
   the top-right corner with two construction circles through it, all in
   `--rule`. Fixed, `aria-hidden`, `pointer-events: none`, 55% opacity under
@@ -173,6 +173,7 @@ source; `public/emon.jpg` was removed to avoid two copies drifting apart.
 `site: https://aa-emon.github.io`, `base: '/'`. If the repo becomes a project
 page, change `base` only. `.github/workflows/deploy.yml` runs on Node 24 and
 publishes `dist/` once GitHub Pages → Source is set to GitHub Actions.
+
 
 
 

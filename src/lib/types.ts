@@ -108,6 +108,8 @@ export interface Lab {
   supervisorUrl?: string;
   /** Optional. When present the lab name becomes a link. */
   url?: string;
-  /** Optional, e.g. "2024–Present". */
-  period?: string;
+  /** 'YYYY' or 'YYYY-MM' */
+  start: string;
+  /** null renders as "Present". */
+  end: string | null;
 }

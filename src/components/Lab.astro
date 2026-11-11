@@ -1,8 +1,9 @@
 ---
-/** Research groups: name, position, supervisor. Links render only when supplied. */
+/** Research groups: period, name, position, supervisor. Links render only when supplied. */
 import Block from './Block.astro';
 import Icon from './Icon.astro';
 import { labs } from '../data';
+import { formatPeriod } from '../lib/format';
 ---
 
 <Block id="lab" index="02" title="Lab">
@@ -10,7 +11,9 @@ import { labs } from '../data';
     {
       labs.map((group) => (
         <li class="lab">
-          <div class="lab__head">
+          <span class="mono lab__period">{formatPeriod(group.start, group.end)}</span>
+
+          <div>
             {group.url ? (
               <a
                 class="lab__name lab__link"
@@ -22,28 +25,26 @@ import { labs } from '../data';
                 <Icon size={9} />
               </a>
             ) : (
-              <span class="lab__name">{group.name}</span>
+              <p class="lab__name">{group.name}</p>
             )}
 
-            {group.period && <span class="mono lab__period">{group.period}</span>}
+            {group.fullName && <p class="mono lab__full">{group.fullName}</p>}
+
+            <p class="lab__role">
+              {group.role} · supervised by{' '}
+              {group.supervisorUrl ? (
+                <a
+                  href={group.supervisorUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {group.supervisor}
+                </a>
+              ) : (
+                group.supervisor
+              )}
+            </p>
           </div>
-
-          {group.fullName && <p class="mono lab__full">{group.fullName}</p>}
-
-          <p class="lab__role">
-            {group.role} · supervised by{' '}
-            {group.supervisorUrl ? (
-              <a
-                href={group.supervisorUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {group.supervisor}
-              </a>
-            ) : (
-              group.supervisor
-            )}
-          </p>
         </li>
       ))
     }
@@ -51,11 +52,15 @@ import { labs } from '../data';
 </Block>
 
 <style>
-  .lab__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
+  .lab {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.15rem;
+  }
+
+  .lab__period {
+    padding-top: 0.15rem;
+    white-space: nowrap;
   }
 
   .lab__name {
@@ -74,10 +79,6 @@ import { labs } from '../data';
 
   .lab__link:hover {
     color: var(--accent);
-  }
-
-  .lab__period {
-    white-space: nowrap;
   }
 
   .lab__full {
@@ -101,5 +102,12 @@ import { labs } from '../data';
 
   .lab__role a:hover {
     color: var(--accent);
+  }
+
+  @media (min-width: 560px) {
+    .lab {
+      grid-template-columns: 5.5rem minmax(0, 1fr);
+      gap: 1.25rem;
+    }
   }
 </style>

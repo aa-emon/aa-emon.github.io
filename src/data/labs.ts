@@ -16,5 +16,7 @@ export const labs = [
     supervisor: 'Dr. Jiehan Zhou',
     supervisorUrl: 'https://cogtwins.github.io/jiehan_zhou',
     url: 'https://cogtwins.github.io',
+    start: '2024',
+    end: null,
   },
 ] satisfies Lab[];

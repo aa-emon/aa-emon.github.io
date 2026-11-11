@@ -27,11 +27,11 @@ not a personal brand site.
 
 ```
 hero      role · name · location · one paragraph · research keywords · links · portrait
-01        Publications   (3 submitted manuscripts)
-02        Awards         (3 competition results, newest first)
-03        Education      (2 degrees)
-04        Lab            (CogTwins Lab + supervisor; add one object per group)
-05        Contact        (email + location)
+01        Education      (2 degrees, each with location)
+02        Lab            (CogTwins Lab + supervisor; add one object per group)
+03        Awards         (3 competition results, newest first)
+04        Publications   (3 submitted manuscripts)
+05        Contact        (email + location + profile links)
 footer    © · updated
 ```
 
@@ -162,3 +162,4 @@ source; `public/emon.jpg` was removed to avoid two copies drifting apart.
 `site: https://aa-emon.github.io`, `base: '/'`. If the repo becomes a project
 page, change `base` only. `.github/workflows/deploy.yml` runs on Node 24 and
 publishes `dist/` once GitHub Pages → Source is set to GitHub Actions.
+

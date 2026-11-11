@@ -6,6 +6,16 @@ import type { Award } from '../lib/types';
  */
 export const awards = [
   {
+    id: 'sdust-star-of-innovation-2026',
+    title: '2026 International Student Honour',
+    titleZh: '2026年度山东科技大学国际学生“科创之星”',
+    prize: '“Star of Innovation”',
+    level: 'institutional',
+    date: '2026-09',
+    issuer: 'College of International Exchange, Shandong University of Science and Technology',
+    issuerZh: '山东科技大学国际交流学院',
+  },
+  {
     id: 'csc-intelligent-computing-2025',
     title:
       'National University Student Computer Systems Ability Competition — Intelligent Computing Innovation Design Track (Xiandao Cup)',

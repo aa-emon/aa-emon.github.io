@@ -1,0 +1,65 @@
+---
+import Block from './Block.astro';
+import { serviceList } from '../data';
+import { formatPeriod } from '../lib/format';
+---
+
+<Block id="service" index="05" title="Service">
+  <ol class="rows">
+    {
+      serviceList.map((entry) => (
+        <li class="svc">
+          <span class="mono svc__years">{formatPeriod(entry.start, entry.end)}</span>
+          <div>
+            <p class="svc__role">{entry.role}</p>
+            <p class="mono svc__org">
+              {entry.url ? (
+                <a class="ulink" href={entry.url} target="_blank" rel="noopener noreferrer">
+                  {entry.org}
+                </a>
+              ) : (
+                entry.org
+              )}
+            </p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</Block>
+
+<style>
+  .svc {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.15rem;
+  }
+
+  .svc__years {
+    padding-top: 0.15rem;
+    white-space: nowrap;
+  }
+
+  .svc__role {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  .svc__org {
+    margin-top: 0.15rem;
+    line-height: 1.6;
+  }
+
+  .svc__org a {
+    color: var(--ink);
+  }
+
+  @media (min-width: 560px) {
+    .svc {
+      grid-template-columns: 5.5rem minmax(0, 1fr);
+      gap: 1.25rem;
+    }
+  }
+</style>

@@ -80,6 +80,20 @@ export interface Education {
   end: string | null;
 }
 
+/** A community, association or volunteer role. */
+export interface ServiceRole {
+  id: string;
+  /** "Member", "Advisor", "Volunteer representative" */
+  role: string;
+  org: string;
+  /** 'YYYY' or 'YYYY-MM' */
+  start: string;
+  /** null renders as "Present". */
+  end: string | null;
+  /** Optional. When present the organisation becomes a link. */
+  url?: string;
+}
+
 /**
  * A group you work with. Add one entry per lab or research group; the
  * supervisor link and the group link are both optional.

@@ -2,16 +2,12 @@
 import { site } from '../data';
 
 const year = new Date().getFullYear();
-const updated = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' }).format(
-  new Date(`${site.updated}-01T00:00:00Z`),
-);
 ---
 
 <footer class="foot">
   <div class="page">
     <div class="foot__inner">
       <p>© {year} {site.name}</p>
-      <p>Updated {updated}</p>
     </div>
   </div>
 </footer>
@@ -34,13 +30,5 @@ const updated = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
     color: var(--muted);
   }
 
-  .foot__inner p:last-child {
-    margin-left: auto;
-  }
 
-  @media (max-width: 560px) {
-    .foot__inner p:last-child {
-      margin-left: 0;
-    }
-  }
 </style>

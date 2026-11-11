@@ -15,7 +15,6 @@ export const awards = [
     date: '2025-11',
     issuer: 'National Research Association for Computer Education in Higher Education',
     issuerZh: '全国高等学校计算机教育研究会',
-    reference: { label: 'Team ID', value: 'T202510242496657' },
   },
   {
     id: 'shandong-digital-engineer-2025',
@@ -27,7 +26,6 @@ export const awards = [
     date: '2025-12',
     issuer: 'Shandong Provincial Department of Human Resources and Social Security',
     issuerZh: '山东省人力资源和社会保障厅',
-    reference: { label: 'Certificate No.', value: '2025-IIoT-01-02' },
   },
   {
     id: 'xiandao-campus-2025',
@@ -38,6 +36,5 @@ export const awards = [
     date: '2025-07',
     issuer: 'Xiandao Industrial Ecosystem Cooperation Base; College of Computer Science and Engineering, SDUST',
     issuerZh: '先导产业生态合作基地秘书处、山东科技大学计算机科学与工程学院',
-    reference: { label: 'Certificate No.', value: '20250604' },
   },
 ] satisfies Award[];

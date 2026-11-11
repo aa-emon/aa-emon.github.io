@@ -66,7 +66,6 @@ export interface Award {
   date: string;
   issuer: string;
   issuerZh?: string;
-  reference?: { label: string; value: string };
 }
 
 export interface Education {

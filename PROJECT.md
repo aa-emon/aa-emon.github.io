@@ -107,7 +107,7 @@ public/
 | --- | --- |
 | New paper | append to `publications.ts` |
 | Paper accepted | set `status: 'accepted'`, add `doi`/`url` — label and order update |
-| New award | append to `awards.ts`; `reference` takes any label/value |
+| New award | append to `awards.ts` |
 | New degree | append to `education.ts` |
 | Change photo | replace `src/assets/emon.jpg` (square, ≥500px) |
 | Change copy | `profile.ts` / `site.ts` |
@@ -151,6 +151,8 @@ source; `public/emon.jpg` was removed to avoid two copies drifting apart.
 - No publications: all three manuscripts are submitted, no DOI, no preprint.
 - No PhD-availability claim.
 - No projects section, no lab member list, no collaborator profiles.
+- No certificate numbers or team IDs — the awards list carries the result,
+  the competition and the issuer only.
 - No GitHub/profile link (not supplied).
 - No submission months beyond the year 2026.
 - Chinese source strings stay in `titleZh` / `issuerZh` only.

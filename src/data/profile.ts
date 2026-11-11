@@ -6,7 +6,7 @@ export const profile = {
   role: 'MSc Candidate, Computer Science',
 
   bio: [
-    'I build and study AI systems for industry — agents, language models, and digital twins that have to hold up where labels are scarce, hardware is small, and a wrong decision is expensive. My research is about the unglamorous guarantees: calibration, auditability, and knowing when a model should stay quiet.',
+    'I am a master’s candidate in computer science. My research is on AI agents, large language models, and industrial AI systems.',
   ],
 
   interests: ['AI agents', 'Large language models', 'Industrial AI', 'Digital twins'],

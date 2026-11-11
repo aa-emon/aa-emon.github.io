@@ -17,10 +17,7 @@ import { formatDate, levelLabel } from '../lib/format';
               <span class="mono award__level">{levelLabel(award.level)}</span>
             </p>
             <p class="award__title">{award.title}</p>
-            <p class="mono award__issuer">
-              {award.issuer}
-              {award.reference && <> · {award.reference.label} {award.reference.value}</>}
-            </p>
+            <p class="mono award__issuer">{award.issuer}</p>
           </div>
         </li>
       ))

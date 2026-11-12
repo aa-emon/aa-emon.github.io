@@ -1,76 +1,226 @@
 ---
 /**
- * Background artwork: a halftone field fading out of the top-right corner,
- * with two construction circles cutting through it.
+ * Background artwork: a modular tile composition in the Swiss / Bauhaus manner.
  *
- * All of it is drawn in the hairline colour, so the page still reads as paper
- * with printer's marks rather than a decorated web page. Fixed behind the
- * column, non-interactive, hidden when printing.
+ * A 5 x 5 grid of quarter-arcs, discs and concentric rings is anchored flush
+ * in the top-right corner of the viewport, bleeding off the edge like a poster.
+ * Its twin sits in the bottom-left corner: the same composition rotated 180
+ * degrees and drawn in outline only. Physical and digital, solid and traced.
+ * (It is a quiet nod to digital twins, with no text and no claims.)
+ *
+ * The composition is the PATTERN array below: one string per row, one
+ * character per cell, outer corner at the top right. Edit it to taste.
+ *
+ *   .  empty                      ,  small dot
+ *   o  ring        O  solid disc  /  diagonal
+ *   a b c d  quarter arc, centred top-left / top-right / bottom-left / bottom-right
+ *   A B C D  the same as a solid sector
+ *   1 2 3 4  three concentric quarter arcs, same corner order
+ *
+ * Hairlines only, one ink colour, one accent dot. Each plate fades toward the
+ * text column through a gradient stroke (no CSS mask, filter or blend mode).
+ * Geometry is computed at build time: static markup, zero client JavaScript.
+ * Fixed behind the column, non-interactive, hidden when printing.
  */
+
+const PATTERN = [
+  '. . . a 2',
+  '. . o D 3',
+  '. . 1 O b',
+  '. . . c ,',
+  '. . . . /',
+].map((row) => row.split(' '));
+
+const S = 80; // cell size, in viewBox units
+const N = PATTERN.length;
+const SIZE = S * N;
+
+const n = (v: number) => String(+v.toFixed(1));
+
+// Quarter arc about corner (cx, cy); (dx, dy) point from that corner into the cell.
+const arc = (cx: number, cy: number, dx: number, dy: number, r: number) =>
+  `M${n(cx + dx * r)} ${n(cy)}A${n(r)} ${n(r)} 0 0 ${dx * dy > 0 ? 1 : 0} ${n(cx)} ${n(cy + dy * r)}`;
+const sector = (cx: number, cy: number, dx: number, dy: number, r: number) =>
+  `M${n(cx)} ${n(cy)}L${n(cx + dx * r)} ${n(cy)}A${n(r)} ${n(r)} 0 0 ${dx * dy > 0 ? 1 : 0} ${n(cx)} ${n(cy + dy * r)}Z`;
+const disc = (cx: number, cy: number, r: number) =>
+  `M${n(cx - r)} ${n(cy)}a${n(r)} ${n(r)} 0 1 0 ${n(2 * r)} 0a${n(r)} ${n(r)} 0 1 0 ${n(-2 * r)} 0Z`;
+
+// Corner order: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right.
+const corner = (x0: number, y0: number, k: number) => ({
+  cx: x0 + (k % 2) * S,
+  cy: y0 + (k > 1 ? S : 0),
+  dx: k % 2 ? -1 : 1,
+  dy: k > 1 ? -1 : 1,
+});
+
+let line = ''; // hairline strokes
+let solid = ''; // shapes that are filled on the solid plate, outline-only on the twin
+let dots = ''; // tiny dots, always filled
+
+PATTERN.forEach((row, j) =>
+  row.forEach((ch, i) => {
+    const x0 = i * S;
+    const y0 = j * S;
+    const mx = x0 + S / 2;
+    const my = y0 + S / 2;
+    const abcd = 'abcd'.indexOf(ch);
+    const ABCD = 'ABCD'.indexOf(ch);
+    const rings = '1234'.indexOf(ch);
+
+    if (abcd >= 0) {
+      const c = corner(x0, y0, abcd);
+      line += arc(c.cx, c.cy, c.dx, c.dy, S);
+    } else if (ABCD >= 0) {
+      const c = corner(x0, y0, ABCD);
+      solid += sector(c.cx, c.cy, c.dx, c.dy, S);
+    } else if (rings >= 0) {
+      const c = corner(x0, y0, rings);
+      for (const f of [1 / 3, 2 / 3, 1]) line += arc(c.cx, c.cy, c.dx, c.dy, S * f);
+    } else if (ch === 'o') line += disc(mx, my, S * 0.36);
+    else if (ch === 'O') solid += disc(mx, my, S * 0.36);
+    else if (ch === ',') dots += disc(mx, my, 1.8);
+    else if (ch === '/') line += `M${x0} ${y0 + S}L${x0 + S} ${y0}`;
+  }),
+);
+
+// Grid nodes as small registration crosses.
+let nodes = '';
+for (let j = 0; j <= N; j++)
+  for (let i = 0; i <= N; i++) nodes += `M${i * S - 3} ${j * S}h6M${i * S} ${j * S - 3}v6`;
+
+// One accent dot, on a grid node.
+const ACC = { x: 3 * S, y: 1 * S, r: 3.5 };
+
+const plates = [
+  { id: 'a', gid: 'art-ga', solid: true },
+  { id: 'b', gid: 'art-gb', solid: false },
+];
 ---
 
 <div class="art" aria-hidden="true">
-  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMaxYMin slice" fill="none">
-    <defs>
-      <pattern id="art-dots" width="12" height="12" patternUnits="userSpaceOnUse">
-        <circle cx="1.1" cy="1.1" r="1.1" fill="currentColor" />
-      </pattern>
+  {
+    plates.map((p) => (
+      <svg
+        class={`fig fig--${p.id}`}
+        viewBox={`0 0 ${SIZE} ${SIZE}`}
+        fill="none"
+        stroke={`url(#${p.gid})`}
+        stroke-width="1"
+        focusable="false"
+      >
+        <defs>
+          <linearGradient id={p.gid} gradientUnits="userSpaceOnUse" x1="0" y1={SIZE} x2={SIZE} y2="0">
+            <stop offset="0" class="s" stop-opacity="0.06" />
+            <stop offset="0.5" class="s" stop-opacity="0.5" />
+            <stop offset="1" class="s" stop-opacity="1" />
+          </linearGradient>
+        </defs>
 
-      <radialGradient id="art-fade" gradientUnits="userSpaceOnUse" cx="1440" cy="0" r="660">
-        <stop offset="0" stop-color="#fff" stop-opacity="1" />
-        <stop offset="0.5" stop-color="#fff" stop-opacity="0.45" />
-        <stop offset="1" stop-color="#fff" stop-opacity="0" />
-      </radialGradient>
-
-      <mask id="art-mask" maskUnits="userSpaceOnUse" x="760" y="0" width="680" height="680">
-        <rect x="760" y="0" width="680" height="680" fill="url(#art-fade)" />
-      </mask>
-    </defs>
-
-    <rect
-      x="760"
-      y="0"
-      width="680"
-      height="680"
-      fill="url(#art-dots)"
-      mask="url(#art-mask)"
-      opacity="0.9"></rect>
-
-    <g stroke="currentColor" stroke-width="1" opacity="0.9">
-      <circle cx="1400" cy="80" r="340" />
-      <circle cx="1215" cy="250" r="195" />
-    </g>
-  </svg>
+        <g transform={p.id === 'b' ? `rotate(180 ${SIZE / 2} ${SIZE / 2})` : undefined}>
+          <path d={nodes} opacity="0.7" />
+          <path d={line} />
+          <path d={solid} fill={p.solid ? `url(#${p.gid})` : 'none'} fill-opacity="0.3" />
+          <path d={dots} fill={`url(#${p.gid})`} stroke="none" />
+          <circle
+            class="acc"
+            cx={ACC.x}
+            cy={ACC.y}
+            r={ACC.r}
+            fill={p.solid ? 'var(--accent, #c8361c)' : 'none'}
+            stroke={p.solid ? 'none' : 'var(--accent, #c8361c)'}
+          />
+        </g>
+      </svg>
+    ))
+  }
 </div>
 
 <style>
   .art {
+    --art: var(--rule, #dcd7cb);
+    --art: color-mix(in srgb, var(--ink, #16150f) 18%, var(--paper, #f6f4ef));
+    --o: 1;
+    /* Plate width: the free margin beside the column, plus a little that fades
+       under it. Never smaller than 14rem, never larger than 30rem. */
+    --w: clamp(14rem, calc((100vw - var(--page, 44rem)) / 2 + 4rem), 30rem);
+
     position: fixed;
     inset: 0;
     z-index: 0;
-    pointer-events: none;
-    color: var(--rule);
-    opacity: 0.9;
     overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+    opacity: var(--o);
+    animation: art-in 0.9s ease-out both;
   }
 
-  .art svg {
-    width: 100%;
-    height: 100%;
+  .fig {
+    position: absolute;
+    display: block;
+    width: var(--w);
+    height: auto;
+    aspect-ratio: 1;
   }
 
-  @media (max-width: 720px) {
+  /* Flush to the corners so the grid bleeds off the page edge. */
+  .fig--a {
+    top: 0;
+    right: 0;
+  }
+
+  .fig--b {
+    bottom: 0;
+    left: 0;
+  }
+
+  .s {
+    stop-color: var(--art);
+  }
+
+  .acc {
+    opacity: 0.9;
+  }
+
+  .fig :is(path, circle) {
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Thin margins: quieten the plates. */
+  @media (max-width: 1180px) {
     .art {
-      opacity: 0.55;
-    }
-
-    .art svg {
-      /* Push the mark toward the corner so it never lands behind the text. */
-      transform: translate(10%, -6%);
+      --o: 0.7;
     }
   }
 
-  @media print {
+  /* Tablet portrait and below: no margin left, so keep each plate small, in its
+     corner, and very faint behind the text. */
+  @media (max-width: 900px) {
+    .art {
+      --o: 0.5;
+      --w: min(56vw, 22rem);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .art {
+      --o: 0.45;
+      --w: 62vw;
+    }
+  }
+
+  @keyframes art-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .art {
+      animation: none;
+    }
+  }
+
+  @media print, (forced-colors: active) {
     .art {
       display: none;
     }
